@@ -6,10 +6,12 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User
+class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,7 +28,7 @@ class User
     private ?string $name = null;
 
     #[ORM\Column]
-    private ?float $balance = null;
+    private float $balance = 0;
 
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Category::class)]
     private Collection $categories;
@@ -192,11 +194,15 @@ class User
     }
 
     /**
-     * @return Collection<int, Role>
+     * @return array
      */
-    public function getRoles(): Collection
+    public function getRoles(): array
     {
-        return $this->roles;
+        $roles = array();
+        foreach ($this->roles as $role) {
+            array_push($roles, $role);
+        }
+        return $roles;
     }
 
     public function addRole(Role $role): static
@@ -213,5 +219,15 @@ class User
         $this->roles->removeElement($role);
 
         return $this;
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->getEmail();
     }
 }
