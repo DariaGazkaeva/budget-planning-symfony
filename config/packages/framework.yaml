@@ -18,6 +18,13 @@ framework:
     php_errors:
         log: true
 
+    assets:
+        packages:
+            icons:
+                base_path: img
+            css:
+                base_path: css
+
 when@test:
     framework:
         test: true
