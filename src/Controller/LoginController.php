@@ -20,10 +20,4 @@ class LoginController extends AbstractController
             'error'         => $error
         ]);
     }
-
-    #[Route('/test', name: 'test')]
-    public function test(): Response
-    {
-        return $this->render('test.html.twig');
-    }
 }

@@ -9,7 +9,7 @@
         <div class="form block">
             <h1>Log in</h1>
             {% if error %}
-                <div>{{ error }}</div>
+                <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
             <form action="{{ path('login') }}" method="post">
                 <label for="email">Email:</label>
@@ -18,7 +18,7 @@
                 <label for="password">Пароль:</label>
                 <input type="password" id="password" name="_password"/>
 
-                <input type="hidden" name="_target_path" value="/test"/>
+                <input type="hidden" name="_target_path" value="/profile"/>
 
                 <input type="submit" value="Send"/>
             </form>

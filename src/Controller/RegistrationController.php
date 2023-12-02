@@ -26,7 +26,7 @@ class RegistrationController extends AbstractController
             );
             $entityManager->persist($user);
             $entityManager->flush();
-            return $this->render("test.html.twig");
+            return $this->render("profile.html.twig");
         }
 
         return $this->render('registration.html.twig', [
