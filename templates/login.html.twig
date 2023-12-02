@@ -8,6 +8,20 @@
     <div class="main-wrapper">
         <div class="form block">
             <h1>Log in</h1>
+            {% if error %}
+                <div>{{ error }}</div>
+            {% endif %}
+            <form action="{{ path('login') }}" method="post">
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="_username" value="{{ last_username }}"/>
+
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" name="_password"/>
+
+                <input type="hidden" name="_target_path" value="/test"/>
+
+                <input type="submit" value="Send"/>
+            </form>
         </div>
     </div>
 {% endblock %}
