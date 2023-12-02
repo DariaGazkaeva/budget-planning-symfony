@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+{% block title %}Budget Planning{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('reset.css', 'css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('index.css', 'css')}}">
+{% endblock %}
+{% block body %}
+    <div class="main-wrapper">
+        <div class="form block">
+            <h1>Balance</h1>
+            {{ form(form) }}
+            <p>There is only one field here.
+                You need to count all your money that you want to count in our service.
+            </p>
+            <p>
+                For example. You can add up money from all your bank cards, cash, stash, etc.
+                This entire amount will be displayed on your profile so that you always know what funds you have.
+            </p>
+            <a href="{{ path('profile') }}">To profile</a>
+        </div>
+    </div>
+{% endblock %}

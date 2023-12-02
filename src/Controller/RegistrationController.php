@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RegistrationController extends AbstractController
 {
+//    TODO automatic authorization after registration
     #[Route('/register', name: 'registration')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
@@ -26,7 +27,7 @@ class RegistrationController extends AbstractController
             );
             $entityManager->persist($user);
             $entityManager->flush();
-            return $this->render("profile.html.twig");
+            return $this->redirectToRoute("profile_init");
         }
 
         return $this->render('registration.html.twig', [

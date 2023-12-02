@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,9 +17,17 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class UserRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, User::class);
+        $this->entityManager = $entityManager;
+    }
+
+    public function update(User $newUser) {
+        $user = $this->entityManager->find(User::class, $newUser->getId());
+        $user->setBalance($newUser->getBalance());
+        $this->entityManager->flush();
     }
 
 //    /**
@@ -36,13 +45,12 @@ class UserRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?User
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findByEmail($value): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.email = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

@@ -6,9 +6,22 @@
 {% endblock %}
 {% block body %}
     <div class="main-wrapper">
-        <div class="form block">
+        {% if balance_modal %}
+            <div>
+                <p>In order for the service to correctly display your balance in the future, 
+                    you need to fix your current balance.
+                </p>
+                <p>Do you want to do this now or later?</p>
+                <a href="{{ path('change_balance') }}">Now</a>
+                <button class="balance-close-modal-btn">Later</button>
+            </div>
+        {% endif %}
+        <div class="block">
+            <a href="{{ path('logout') }}">Logout</a>
             <h1>Profile</h1>
             <h2>Hello, {{ user.name }}</h2>
+            <h3>Your balance: {{ user.balance }}</h3>
+            <a href="{{ path('change_balance') }}">Change balance</a>
         </div>
     </div>
 {% endblock %}
