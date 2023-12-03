@@ -21,20 +21,20 @@ class MoneyOperationRepository extends ServiceEntityRepository
         parent::__construct($registry, MoneyOperation::class);
     }
 
-//    /**
-//     * @return MoneyOperation[] Returns an array of MoneyOperation objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return MoneyOperation[] Returns an array of MoneyOperation objects
+     */
+    public function findByOwnerAndType($userId, $type): array
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.owner = :user_id')
+            ->andWhere('m.is_income = :type')
+            ->setParameter('user_id', $userId)
+            ->setParameter('type', $type)
+            ->orderBy('m.date', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
 //    public function findOneBySomeField($value): ?MoneyOperation
 //    {
