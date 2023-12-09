@@ -2,7 +2,7 @@
 {% block title %}Budget Planning{% endblock %}
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('reset.css', 'css')}}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('index.css', 'css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('profile.css', 'css')}}">
 {% endblock %}
 {% block body %}
     <div class="main-wrapper">
@@ -16,13 +16,60 @@
                 <button class="balance-close-modal-btn">Later</button>
             </div>
         {% endif %}
-        <div class="block">
-            <a href="{{ path('logout') }}">Logout</a>
-            <h1>Profile</h1>
+        <div class="greeting">
             <h2>Hello, {{ user.name }}</h2>
+        </div>
+        <div class="balance">
             <h3>Your balance: {{ user.balance }}</h3>
             <a href="{{ path('change_balance') }}">Change balance</a>
-            <a href="{{ path('history') }}">History</a>
+        </div>
+        <div class="operations-block">
+            <div class="operations-info">
+                <table>
+                    <tr>
+                        <th colspan="2">In this month you</th>
+                    </tr>
+                    <tr>
+                        <th>EARNED</th>
+                        <th>SPENT</th>
+                    </tr>
+                    <tr>
+                        <td>{{ income_sum }}</td>
+                        <td>{{ expense_sum }}</td>
+                    </tr>
+                </table>
+                <a href="{{ path('history') }}">History</a>
+            </div>
+            <div class="operation-forms">
+                <div class="income-form">
+                    <h3>Add income</h3>
+                    {{ form_start(income_form) }}
+                    {{ form_widget(income_form) }}
+                    <input type="submit" value="Send"/>
+                    {{ form_end(income_form) }}
+                </div>
+                <div class="expense-form">
+                    <h3>Add expense</h3>
+                    {{ form_start(expense_form) }}
+                    {{ form_widget(expense_form) }}
+                    <input type="submit" value="Send"/>
+                    {{ form_end(expense_form) }}
+                </div>
+            </div>
+        </div>
+        <h3 class="center">Your limits</h3>
+        <div class="limits-block">
+            {% if not limits %}
+                <p>You have no limits</p>
+            {% endif %}
+            {% for limit in limits %}
+                <div class="limit">
+                    <span>{{ limit.category.name }}</span>
+                    <p>Available:</p>
+                    <p>{{ limit.currentSum }} / {{ limit.totalSum }}</p>
+                </div>
+            {% endfor %}
+
         </div>
     </div>
 {% endblock %}
