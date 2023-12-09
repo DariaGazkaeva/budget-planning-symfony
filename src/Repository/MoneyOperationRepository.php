@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\MoneyOperation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,24 +17,34 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MoneyOperationRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, MoneyOperation::class);
+        $this->entityManager = $entityManager;
     }
 
     /**
      * @return MoneyOperation[] Returns an array of MoneyOperation objects
      */
-    public function findByOwnerAndType($userId, $type): array
+    public function findByOwnerAndTypeAndPeriod($userId, $type, $start, $end): array
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.owner = :user_id')
             ->andWhere('m.is_income = :type')
+            ->andWhere('m.date BETWEEN :start AND :end')
             ->setParameter('user_id', $userId)
             ->setParameter('type', $type)
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
             ->orderBy('m.date', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function save(MoneyOperation $moneyOperation) {
+        $this->entityManager->persist($moneyOperation);
+        $this->entityManager->flush();
     }
 
 //    public function findOneBySomeField($value): ?MoneyOperation
