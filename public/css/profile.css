@@ -1,0 +1,90 @@
+.greeting, .balance {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    height: 5vh;
+}
+
+.greeting a, .greeting h2, .balance a, .balance h2 {
+    margin: 5px;
+}
+
+.operations-info {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.operations-info td {
+    font-weight: bold;
+    text-align: center;
+    background-color: #04AA6D;
+}
+
+.operations-info th {
+    font-weight: normal;
+    background-color: #e0eae3;
+    width: 50%;
+}
+
+.operations-info table {
+    width: 90%;
+    margin-top: 20px;
+}
+
+.operation-forms {
+    display: flex;
+    flex-direction: row;
+    width: 45%;
+    justify-content: space-around;
+    box-shadow: 5px 4px 4px #afafaf;
+    padding: 5px;
+    text-align: center;
+    background-color: #e0eae3;
+    align-items: center;
+}
+
+.operation-forms div {
+    display: flex;
+    flex-direction: column;
+}
+
+.limits-block {
+    display: flex;
+    flex-direction: row;
+    min-height: 20vh;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.operations-block {
+    height: 55vh;
+}
+
+.limit {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 5px 4px 4px #afafaf;
+    margin: 10px;
+    min-width: 10%;
+    height: 100px;
+    align-items: center;
+    background-color: #04AA6D;
+    color: white;
+}
+
+.limit span {
+    font-weight: bold;
+}
+
+.limit p {
+    margin: 3px;
+}
+
+.center {
+    text-align: center;
+}

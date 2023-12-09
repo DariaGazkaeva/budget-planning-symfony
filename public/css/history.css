@@ -1,0 +1,40 @@
+.money-operation td {
+    font-weight: bold;
+    text-align: center;
+    background-color: #e0eae3;
+}
+
+.money-operation th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #04AA6D;
+    color: white;
+}
+
+.money-operation {
+    border-collapse: collapse;
+    width: 90%;
+}
+
+td, th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2;}
+
+tr:hover {background-color: #ddd;}
+
+.block {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+.change-period-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
