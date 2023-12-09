@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Limit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,33 +18,45 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class LimitRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Limit::class);
+        $this->entityManager = $entityManager;
     }
 
-//    /**
-//     * @return Limit[] Returns an array of Limit objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('l.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function save(Limit $limit) {
+        $this->entityManager->persist($limit);
+        $this->entityManager->flush();
+    }
 
-//    public function findOneBySomeField($value): ?Limit
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function update(Limit $newLimit) {
+        $limit = $this->entityManager->find(Limit::class, $newLimit->getId());
+        $limit->setCurrentSum($newLimit->getCurrentSum());
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @return Limit[] Returns an array of Limit objects
+     */
+    public function findAllByOwner($userId): array
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.owner = :val')
+            ->setParameter('val', $userId)
+            ->orderBy('l.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByCategoryAndOwnerId(Category $category, $owner): ?Limit
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.category = :c')
+            ->andWhere('l.owner = :o')
+            ->setParameter('c', $category->getId())
+            ->setParameter('o', $owner)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
