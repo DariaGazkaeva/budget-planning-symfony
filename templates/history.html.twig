@@ -1,57 +1,60 @@
 {% extends "base.html.twig" %}
 {% block title %}Budget Planning{% endblock %}
 {% block stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{{ asset('reset.css', 'css')}}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('index.css', 'css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('history.css', 'css')}}">
 {% endblock %}
 {% block body %}
     <div class="main-wrapper">
+        <div class="change-period-block">
+            <p>Look for another period:</p>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <input type="submit" value="Look"/>
+            {{ form_end(form) }}
+        </div>
         <div class="block">
-            <h1>History (expense)</h1>
+            <h1>Expenses</h1>
             <table class="money-operation">
                 <tr>
                     <th>Category</th>
                     <th>Sum</th>
                     <th>Date</th>
                     <th>Description</th>
-                    <th></th>
-                    <th></th>
+                    <th colspan="2"></th>
                 </tr>
                 {% for expense in history_expense %}
                     <tr>
-                        <th>{{ expense.category.name }}</th>
-                        <th>{{ expense.sum }}</th>
-                        <th>{{ expense.date | date("d.m.Y", "Europe/Moscow") }}</th>
-                        <th>{{ expense.description }}</th>
-                        <th><a href='/'>Edit</a></th>
-                        <th><a href='/'>Delete</a></th>
+                        <td>{{ expense.category.name }}</td>
+                        <td>{{ expense.sum }}</td>
+                        <td>{{ expense.date | date("d.m.Y", "Europe/Moscow") }}</td>
+                        <td>{{ expense.description }}</td>
+                        <td><a href='/'>Edit</a></td>
+                        <td><a href='/'>Delete</a></td>
                     </tr>
                 {% endfor %}
             </table>
         </div>
         <div class="block">
-            <h1>History (income)</h1>
+            <h1>Income</h1>
             <table class="money-operation">
                 <tr>
                     <th>Category</th>
                     <th>Sum</th>
                     <th>Date</th>
                     <th>Description</th>
-                    <th></th>
-                    <th></th>
+                    <th colspan="2"></th>
                 </tr>
                 {% for income in history_income %}
                     <tr>
-                        <th>{{ income.category.name }}</th>
-                        <th>{{ income.sum }}</th>
-                        <th>{{ income.date | date("d.m.Y", "Europe/Moscow") }}</th>
-                        <th>{{ income.description }}</th>
-                        <th><a href='/'>Edit</a></th>
-                        <th><a href='/'>Delete</a></th>
+                        <td>{{ income.category.name }}</td>
+                        <td>{{ income.sum }}</td>
+                        <td>{{ income.date | date("d.m.Y", "Europe/Moscow") }}</td>
+                        <td>{{ income.description }}</td>
+                        <td><a href='/'>Edit</a></td>
+                        <td><a href='/'>Delete</a></td>
                     </tr>
                 {% endfor %}
             </table>
         </div>
-        <a href="{{ path('profile') }}">To profile</a>
     </div>
 {% endblock %}
