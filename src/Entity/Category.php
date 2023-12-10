@@ -51,7 +51,7 @@ class Category
         return $this;
     }
 
-    public function isIsIncome(): ?bool
+    public function isIncome(): ?bool
     {
         return $this->is_income;
     }

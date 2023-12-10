@@ -43,6 +43,13 @@ class CategoryRepository extends ServiceEntityRepository
         return $category->getId();
     }
 
+    public function update(Category $newCategory) {
+        $category = $this->entityManager->find(Category::class, $newCategory->getId());
+        $category->setName($newCategory->getName());
+        $category->setIsIncome($newCategory->isIncome());
+        $this->entityManager->flush();
+    }
+
 //    public function findOneBySomeField($value): ?Category
 //    {
 //        return $this->createQueryBuilder('c')

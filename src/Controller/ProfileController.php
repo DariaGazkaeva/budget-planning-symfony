@@ -83,6 +83,8 @@ class ProfileController extends AbstractController
                 'income_form' =>$incomeForm->createView(),
                 'expense_form' =>$expenseForm->createView(),
                 'limits' => $limits,
+                'income_categories' => $this->categoryRepository->findAllByType(true),
+                'expense_categories' => $this->categoryRepository->findAllByType(false)
             ]);
     }
 
@@ -217,5 +219,30 @@ class ProfileController extends AbstractController
             'id' => $id,
             'name' => $category->getName()
         ], 200);
+    }
+
+    #[Route('/profile/category/{id}', name: 'change_category')]
+    public function changeCategory(Category $category, Request $request) {
+        $defaults = [
+            'name' => $category->getName(),
+            'is_income' => $category->isIncome()
+        ];
+        $form = $this->createFormBuilder($defaults)
+            ->add('is_income', ChoiceType::class, [
+                'choices' => ['Income' => true, 'Expense' => false],
+            ])
+            ->add('name', TextType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $updated = $category;
+            $updated->setName($form->getData()['name']);
+            $updated->setIsIncome($form->getData()['is_income'] === '1');
+            $this->categoryRepository->update($updated);
+            return $this->redirectToRoute('profile');
+        }
+        return $this->render("operation.html.twig", ['form' => $form]);
     }
 }

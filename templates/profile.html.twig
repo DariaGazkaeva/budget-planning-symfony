@@ -73,6 +73,26 @@
                     <input type="submit" value="Save">
                 </form>
                 <button class="show-all-categories-button">All categories</button>
+                <p>Click on category if you want edit it.</p>
+                <p>To delete click on cross next to category.</p>
+                <div class="all-categories display-none">
+                    <div>
+                        <h3>Income</h3>
+                        <ul class="income-ul">
+                            {% for category in income_categories %}
+                                <li><a data-category-id="{{ category.id }}" href="{{ path('change_category', {'id': category.id}) }}">{{ category.name }}</a> X</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Expense</h3>
+                        <ul class="expense-ul">
+                            {% for category in expense_categories %}
+                                <li><a data-category-id="{{ category.id }}" href="{{ path('change_category', {'id': category.id}) }}">{{ category.name }}</a> X</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
         <h3 class="center">Your limits</h3>

@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const categorySelectIncome = document.querySelector(".income-form select");
     const categorySelectExpense = document.querySelector(".expense-form select");
     const allCategoriesButton = document.querySelector('.show-all-categories-button');
+    const allCategoriesDiv = document.querySelector('.all-categories');
+    const incomeCategories = allCategoriesDiv.querySelector('.income-ul');
+    const expenseCategories = allCategoriesDiv.querySelector('.expense-ul');
     // const deleteCategoryButton = document.querySelector(".delete-category-widget__button");
     // const deleteCategoryWidget = document.querySelector(".delete-category-widget");
     // let deleteCategoryWidgetOffers = deleteCategoryWidget.querySelectorAll(".delete-category-widget__a");
@@ -12,6 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
     createCategoryButton.addEventListener('click', () => {
         createCategoryForm.classList.remove('display-none');
     });
+
+    allCategoriesButton.addEventListener('click', () => {
+        allCategoriesDiv.classList.remove('display-none');
+    })
 
     // deleteCategoryButton.addEventListener('click', () => {
     //     deleteCategoryWidget.classList.toggle('display-none');
@@ -49,14 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 createCategoryForm.classList.add('display-none');
                 let data = await response.json();
                 let option = `<option value="${data.id}">${data.name}</option>`;
+                let li = `<li><a data-category-id="${data.id}" href="/profile/category/${data.id}">${data.name}</a> X</li>`;
                 if (income === 'true') {
                     categorySelectIncome.insertAdjacentHTML('beforeend', option);
+                    incomeCategories.insertAdjacentHTML('beforeend', li);
                 } else {
                     categorySelectExpense.insertAdjacentHTML('beforeend', option);
+                    expenseCategories.insertAdjacentHTML('beforeend', li);
                 }
-                // let li = `<li><a class="delete-category-widget__a" data-category-id="${data.id}" href="/category/${data.id}">${data.name}</a></li>`;
-                // const ul = deleteCategoryWidget.querySelector("ul");
-                // ul.insertAdjacentHTML('beforeend', li);
                 // ul.lastChild.addEventListener('click', (event) => onClickDelete(event, event.target));
                 // deleteCategoryWidgetOffers = deleteCategoryWidget.querySelectorAll(".delete-category-widget__a");
             } else if (response.status === 403) {

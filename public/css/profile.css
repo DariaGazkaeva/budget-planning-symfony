@@ -118,10 +118,23 @@
     margin: 3px;
 }
 
-.center {
+.center, ul {
     text-align: center;
 }
 
 .limit a {
     color: white;
+}
+
+.all-categories {
+    display: flex;
+    flex-direction: row;
+}
+
+li {
+    cursor: pointer;
+}
+
+.category-block p {
+    margin: 0;
 }
