@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\LimitService;
@@ -203,5 +204,18 @@ class ProfileController extends AbstractController
             return $this->redirectToRoute('profile');
         }
         return $this->render("operation.html.twig", ['form' => $form]);
+    }
+
+    #[Route('/profile/category', name: 'create_category', methods: 'POST')]
+    public function createCategory() {
+        $category = new Category();
+        $category->setOwner($this->security->getUser());
+        $category->setIsIncome($_POST['income']);
+        $category->setName($_POST['name']);
+        $id = $this->categoryRepository->save($category);
+        return new JsonResponse([
+            'id' => $id,
+            'name' => $category->getName()
+        ], 200);
     }
 }

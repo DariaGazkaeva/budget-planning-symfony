@@ -13,7 +13,7 @@
 }
 
 .operations-info {
-    width: 45%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -39,7 +39,7 @@
 .operation-forms {
     display: flex;
     flex-direction: row;
-    width: 45%;
+    width: 100%;
     justify-content: space-around;
     box-shadow: 5px 4px 4px #afafaf;
     padding: 5px;
@@ -63,6 +63,39 @@
 
 .operations-block {
     height: 55vh;
+}
+
+.category-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.category-block button {
+    width: 60%;
+    height: 10%;
+    background-color: #04AA6D;
+    color: white;
+    font-weight: bold;
+    border: none;
+    box-shadow: 5px 4px 4px #afafaf;
+    cursor: pointer;
+}
+
+.display-none {
+    display: none;
+}
+
+.category-block form {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.two-blocks-in-row {
+    display: grid;
+    grid-template-columns:  50% 50%;
 }
 
 .limit {

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,9 +17,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CategoryRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Category::class);
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -32,6 +35,12 @@ class CategoryRepository extends ServiceEntityRepository
             ->orderBy('c.id', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function save(Category $category) {
+        $this->entityManager->persist($category);
+        $this->entityManager->flush();
+        return $category->getId();
     }
 
 //    public function findOneBySomeField($value): ?Category
