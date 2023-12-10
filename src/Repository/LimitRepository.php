@@ -33,6 +33,8 @@ class LimitRepository extends ServiceEntityRepository
     public function update(Limit $newLimit) {
         $limit = $this->entityManager->find(Limit::class, $newLimit->getId());
         $limit->setCurrentSum($newLimit->getCurrentSum());
+        $limit->setTotalSum($newLimit->getTotalSum());
+        $limit->setCategory($newLimit->getCategory());
         $this->entityManager->flush();
     }
 

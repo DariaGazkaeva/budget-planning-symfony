@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Limit;
 use App\Entity\MoneyOperation;
 use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
@@ -170,5 +171,37 @@ class ProfileController extends AbstractController
         return $this->render("balance.html.twig", [
             'form' => $form->createView()
         ]);
+    }
+
+    #[Route('/profile/limit/{id}', name: 'change_limit')]
+    public function changeLimit(Limit $limit, Request $request) {
+        $defaults = [
+            'category' => $limit->getCategory(),
+            'total_sum' => $limit->getTotalSum(),
+            'current_sum' => $limit->getCurrentSum()
+        ];
+        $form = $this->createFormBuilder($defaults)
+            ->add('category', ChoiceType::class, [
+                'choices' => $this->categoryRepository->findAllByType(false),
+                'choice_value' => 'id',
+                'choice_label' => function (Category $category): string {
+                    return $category->getName();
+                },
+            ])
+            ->add('total_sum', NumberType::class)
+            ->add('current_sum', NumberType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $updated = $limit;
+            $updated->setCategory($form->getData()['category']);
+            $updated->setCurrentSum($form->getData()['current_sum']);
+            $updated->setTotalSum($form->getData()['total_sum']);
+            $this->limitService->edit($updated);
+            return $this->redirectToRoute('profile');
+        }
+        return $this->render("operation.html.twig", ['form' => $form]);
     }
 }

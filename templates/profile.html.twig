@@ -66,9 +66,9 @@
                     <span>{{ limit.category.name }}</span>
                     <p>Available:</p>
                     <p>{{ limit.currentSum }} / {{ limit.totalSum }}</p>
+                    <a href="{{ path('change_limit', {'id': limit.id}) }}">Edit</a>
                 </div>
             {% endfor %}
-
         </div>
     </div>
 {% endblock %}
