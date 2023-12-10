@@ -2,12 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
+use App\Entity\MoneyOperation;
+use App\Repository\CategoryRepository;
 use App\Repository\MoneyOperationRepository;
+use App\Service\MoneyOperationService;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -47,4 +53,44 @@ class HistoryController extends AbstractController
             'history_expense' => $moneyOperationRepository->findByOwnerAndTypeAndPeriod($this->userId, false, $defaults['start'], $defaults['end'])
         ]);
     }
+
+    #[Route('/profile/money-operation/{id}', name: 'edit_money_operation')]
+    public function editGET(MoneyOperation $moneyOperation, MoneyOperationService $moneyOperationService, Request $request, CategoryRepository $categoryRepository) {
+        $defaults = [
+            'category' => $moneyOperation->getCategory(),
+            'sum' => $moneyOperation->getSum(),
+            'date' => $moneyOperation->getDate(),
+            'description' => $moneyOperation->getDescription()
+        ];
+        $form = $this->createFormBuilder($defaults)
+            ->add('category', ChoiceType::class, [
+                'choices' => $categoryRepository->findAllByType($moneyOperation->isIncome()),
+                'choice_value' => 'id',
+                'choice_label' => function (Category $category): string {
+                    return $category->getName();
+                },
+            ])
+            ->add('sum', NumberType::class)
+            ->add('date', DateType::class, ['widget' => 'single_text',])
+            ->add('description', TextType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $oldSum = $moneyOperation->getSum();
+            $updated = $moneyOperation;
+            $updated->setDate($form->getData()['date']);
+            $updated->setSum($form->getData()['sum']);
+            $updated->setCategory($form->getData()['category']);
+            $updated->setDescription($form->getData()['description']);
+            $moneyOperationService->edit($updated, $oldSum);
+            return $this->redirectToRoute('history');
+        }
+        return $this->render("operation.html.twig", ['form' => $form]);
+    }
+//
+//    #[Route('/profile/money-operation/{id}', name: 'delete_money_operation')]
+//    public function delete(MoneyOperationRepository $moneyOperationRepository) {
+//    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Category;
 use App\Entity\MoneyOperation;
 use App\Repository\MoneyOperationRepository;
 use App\Repository\UserRepository;
@@ -37,22 +38,40 @@ class MoneyOperationService
     public function add(MoneyOperation $moneyOperation): void
     {
         $this->moneyOperationRepository->save($moneyOperation);
+        $this->changeBalance($moneyOperation->getSum(), $moneyOperation->isIncome());
+        if (!$moneyOperation->isIncome()) {
+            $this->changeLimit($moneyOperation->getSum(), $moneyOperation->getCategory());
+        }
+    }
 
+    public function edit(MoneyOperation $moneyOperation, $oldSum): void
+    {
+        $this->moneyOperationRepository->update($moneyOperation);
+        $x = -1 * ($oldSum - $moneyOperation->getSum());
+        $this->changeBalance($x, $moneyOperation->isIncome());
+        if (!$moneyOperation->isIncome()) {
+            $this->changeLimit($x, $moneyOperation->getCategory());
+        }
+    }
+
+    private function changeBalance($sum, bool $isIncome): void
+    {
         $balance = $this->security->getUser()->getBalance();
-        if ($moneyOperation->isIncome()) {
-            $balance += $moneyOperation->getSum();
+        if ($isIncome) {
+            $balance += $sum;
         } else {
-            $balance -= $moneyOperation->getSum();
+            $balance -= $sum;
         }
         $user = $this->security->getUser()->setBalance($balance);
         $this->userRepository->update($user);
+    }
 
-        if (!$moneyOperation->isIncome()) {
-            $limit = $this->limitService->findByCategory($moneyOperation->getCategory());
-            if ($limit !== null) {
-                $limit->setCurrentSum($limit->getCurrentSum() - $moneyOperation->getSum());
-                $this->limitService->edit($limit);
-            }
+    private function changeLimit($sum, Category $category): void
+    {
+        $limit = $this->limitService->findByCategory($category);
+        if ($limit !== null) {
+            $limit->setCurrentSum($limit->getCurrentSum() - $sum);
+            $this->limitService->edit($limit);
         }
     }
 }

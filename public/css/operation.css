@@ -1,0 +1,19 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    box-shadow: 5px 4px 4px #afafaf;
+    padding: 5px;
+    text-align: center;
+    background-color: #e0eae3;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.form div {
+    display: flex;
+    flex-direction: column;
+}

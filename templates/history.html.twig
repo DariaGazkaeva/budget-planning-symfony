@@ -28,7 +28,7 @@
                         <td>{{ expense.sum }}</td>
                         <td>{{ expense.date | date("d.m.Y", "Europe/Moscow") }}</td>
                         <td>{{ expense.description }}</td>
-                        <td><a href='/'>Edit</a></td>
+                        <td><a href='{{ path('edit_money_operation', {'id': expense.id}) }}'>Edit</a></td>
                         <td><a href='/'>Delete</a></td>
                     </tr>
                 {% endfor %}
@@ -50,7 +50,7 @@
                         <td>{{ income.sum }}</td>
                         <td>{{ income.date | date("d.m.Y", "Europe/Moscow") }}</td>
                         <td>{{ income.description }}</td>
-                        <td><a href='/'>Edit</a></td>
+                        <td><a href='{{ path('edit_money_operation', {'id': income.id}) }}'>Edit</a></td>
                         <td><a href='/'>Delete</a></td>
                     </tr>
                 {% endfor %}

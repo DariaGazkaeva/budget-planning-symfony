@@ -47,13 +47,25 @@ class MoneyOperationRepository extends ServiceEntityRepository
         $this->entityManager->flush();
     }
 
-//    public function findOneBySomeField($value): ?MoneyOperation
+    public function delete(MoneyOperation $moneyOperation) {
+
+    }
+
+    public function update(MoneyOperation $moneyOperation) {
+        $operation = $this->entityManager->find(MoneyOperation::class, $moneyOperation->getId());
+        $operation->setDescription($moneyOperation->getDescription());
+        $operation->setSum($moneyOperation->getSum());
+        $operation->setDate($moneyOperation->getDate());
+        $operation->setCategory($moneyOperation->getCategory());
+        $this->entityManager->flush();
+    }
+
+//    public function findById($id): ?MoneyOperation
 //    {
 //        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
+//            ->andWhere('m.id = :id')
+//            ->setParameter('id', $id)
 //            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
+//            ->getOneOrNullResult();
 //    }
 }

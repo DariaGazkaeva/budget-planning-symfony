@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+{% block title %}Budget Planning{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('reset.css', 'css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('operation.css', 'css')}}">
+{% endblock %}
+{% block body %}
+    <div class="main-wrapper">
+        <div class="form">
+            <h3>Edit</h3>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <input type="submit" value="Save"/>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
