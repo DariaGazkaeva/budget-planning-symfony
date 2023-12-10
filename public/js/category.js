@@ -8,9 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const allCategoriesDiv = document.querySelector('.all-categories');
     const incomeCategories = allCategoriesDiv.querySelector('.income-ul');
     const expenseCategories = allCategoriesDiv.querySelector('.expense-ul');
-    // const deleteCategoryButton = document.querySelector(".delete-category-widget__button");
-    // const deleteCategoryWidget = document.querySelector(".delete-category-widget");
-    // let deleteCategoryWidgetOffers = deleteCategoryWidget.querySelectorAll(".delete-category-widget__a");
+    let spans = allCategoriesDiv.querySelectorAll('span');
 
     createCategoryButton.addEventListener('click', () => {
         createCategoryForm.classList.remove('display-none');
@@ -20,15 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
         allCategoriesDiv.classList.remove('display-none');
     })
 
-    // deleteCategoryButton.addEventListener('click', () => {
-    //     deleteCategoryWidget.classList.toggle('display-none');
-    // });
-    //
-    // for (let i = 0; i < deleteCategoryWidgetOffers.length; i++) {
-    //     deleteCategoryWidgetOffers[i]
-    //         .addEventListener('click', (event) => onClickDelete(event, deleteCategoryWidgetOffers[i]));
-    // }
-    //
+    spans.forEach(span => {
+        span.addEventListener('click', () => {
+            onClickDelete(span)
+        })
+    })
+
     const makeHeaders = () => {
         return {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -56,16 +51,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 createCategoryForm.classList.add('display-none');
                 let data = await response.json();
                 let option = `<option value="${data.id}">${data.name}</option>`;
-                let li = `<li><a data-category-id="${data.id}" href="/profile/category/${data.id}">${data.name}</a> X</li>`;
+                let li = `<li><a href="/profile/category/${data.id}">${data.name}</a><span data-category-id="${data.id}"> X</span></li>`;
                 if (income === 'true') {
                     categorySelectIncome.insertAdjacentHTML('beforeend', option);
                     incomeCategories.insertAdjacentHTML('beforeend', li);
+                    incomeCategories.lastChild.lastChild.addEventListener('click', (event) => onClickDelete(event.target));
                 } else {
                     categorySelectExpense.insertAdjacentHTML('beforeend', option);
                     expenseCategories.insertAdjacentHTML('beforeend', li);
+                    expenseCategories.lastChild.lastChild.addEventListener('click', (event) => onClickDelete(event.target));
                 }
-                // ul.lastChild.addEventListener('click', (event) => onClickDelete(event, event.target));
-                // deleteCategoryWidgetOffers = deleteCategoryWidget.querySelectorAll(".delete-category-widget__a");
+                spans = allCategoriesDiv.querySelectorAll('span');
             } else if (response.status === 403) {
                 alert('FORBIDDEN OPERATION');
             } else if (response.status === 400) {
@@ -78,34 +74,37 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('UNKNOWN ERROR')
         });
     })
-    //
-    // const onClickDelete = (event, category) => {
-    //     event.preventDefault();
-    //     let categoryId = category.getAttribute("data-category-id");
-    //     const authHeaderName = document.querySelector('meta[name=_csrf_header]').content;
-    //     const authToken = document.querySelector('meta[name=_csrf]').content;
-    //     const headers = makeHeaders();
-    //     headers[authHeaderName] = authToken;
-    //
-    //     fetch(category.href, {
-    //         method: "DELETE",
-    //         headers: headers
-    //     }).then(async response => {
-    //         if (response.ok) {
-    //             let option = categorySelect.querySelector(`option[value="${categoryId}"]`);
-    //             category.remove();
-    //             categorySelect.removeChild(option);
-    //         } else if (response.status === 403) {
-    //             alert('FORBIDDEN OPERATION');
-    //         } else if (response.status === 400) {
-    //             alert('BAD REQUEST');
-    //         } else {
-    //             alert('SERVER ERROR');
-    //         }
-    //     }).catch(error => {
-    //         console.log(error);
-    //         alert('UNKNOWN ERROR')
-    //     });
-    //
-    // }
+
+    const onClickDelete = (span) => {
+        const categoryId = span.dataset.categoryId;
+        // const authHeaderName = document.querySelector('meta[name=_csrf_header]').content;
+        // const authToken = document.querySelector('meta[name=_csrf]').content;
+        const headers = makeHeaders();
+        // headers[authHeaderName] = authToken;
+        fetch('/profile/delete-category/' + categoryId, {
+            method: "DELETE",
+            headers: headers
+        }).then(async response => {
+            if (response.ok) {
+                let option = categorySelectIncome.querySelector(`option[value="${categoryId}"]`);
+                if (option === null) {
+                    option = categorySelectExpense.querySelector(`option[value="${categoryId}"]`);
+                    categorySelectExpense.removeChild(option);
+                } else {
+                    categorySelectIncome.removeChild(option);
+                }
+                span.parentNode.remove();
+            } else if (response.status === 403) {
+                alert('FORBIDDEN OPERATION');
+            } else if (response.status === 400) {
+                alert('BAD REQUEST');
+            } else {
+                alert('SERVER ERROR');
+            }
+        }).catch(error => {
+            console.log(error);
+            alert('UNKNOWN ERROR')
+        });
+
+    }
 })

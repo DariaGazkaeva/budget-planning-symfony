@@ -245,4 +245,15 @@ class ProfileController extends AbstractController
         }
         return $this->render("operation.html.twig", ['form' => $form]);
     }
+
+    #[Route('/profile/delete-category/{id}', name: 'delete_category', methods: 'DELETE')]
+    public function deleteCategory(Category $category) {
+        if ($category->getOwner()->getId() === $this->userId) {
+            $this->categoryRepository->delete($category);
+            return new JsonResponse(['categoryId' => $category->getId()], 200);
+        } else {
+            return new JsonResponse(status: 400);
+        }
+
+    }
 }

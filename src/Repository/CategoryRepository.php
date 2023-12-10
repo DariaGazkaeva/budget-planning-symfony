@@ -50,6 +50,11 @@ class CategoryRepository extends ServiceEntityRepository
         $this->entityManager->flush();
     }
 
+    public function delete(Category $category) {
+        $this->entityManager->remove($category);
+        $this->entityManager->flush();
+    }
+
 //    public function findOneBySomeField($value): ?Category
 //    {
 //        return $this->createQueryBuilder('c')
