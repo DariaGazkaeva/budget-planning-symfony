@@ -48,7 +48,8 @@ class MoneyOperationRepository extends ServiceEntityRepository
     }
 
     public function delete(MoneyOperation $moneyOperation) {
-
+        $this->entityManager->remove($moneyOperation);
+        $this->entityManager->flush();
     }
 
     public function update(MoneyOperation $moneyOperation) {

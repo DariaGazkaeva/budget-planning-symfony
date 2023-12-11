@@ -38,3 +38,7 @@ tr:hover {background-color: #ddd;}
     flex-direction: column;
     align-items: center;
 }
+
+.display-none {
+    display: none;
+}

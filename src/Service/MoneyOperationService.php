@@ -54,6 +54,15 @@ class MoneyOperationService
         }
     }
 
+    public function delete(MoneyOperation $moneyOperation): void
+    {
+        $this->moneyOperationRepository->delete($moneyOperation);
+        $this->changeBalance($moneyOperation->getSum() * -1, $moneyOperation->isIncome());
+        if (!$moneyOperation->isIncome()) {
+            $this->changeLimit($moneyOperation->getSum() * -1, $moneyOperation->getCategory());
+        }
+    }
+
     private function changeBalance($sum, bool $isIncome): void
     {
         $balance = $this->security->getUser()->getBalance();
@@ -70,7 +79,12 @@ class MoneyOperationService
     {
         $limit = $this->limitService->findByCategory($category);
         if ($limit !== null) {
-            $limit->setCurrentSum($limit->getCurrentSum() - $sum);
+            $max = $limit->getTotalSum();
+            $current = $limit->getCurrentSum() - $sum;
+            if ($current > $max) {
+                $current = $max;
+            }
+            $limit->setCurrentSum($current);
             $this->limitService->edit($limit);
         }
     }

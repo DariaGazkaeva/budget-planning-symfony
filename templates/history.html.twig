@@ -3,6 +3,9 @@
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('history.css', 'css')}}">
 {% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('history.js', 'js') }}"></script>
+{% endblock %}
 {% block body %}
     <div class="main-wrapper">
         <div class="change-period-block">
@@ -29,7 +32,7 @@
                         <td>{{ expense.date | date("d.m.Y", "Europe/Moscow") }}</td>
                         <td>{{ expense.description }}</td>
                         <td><a href='{{ path('edit_money_operation', {'id': expense.id}) }}'>Edit</a></td>
-                        <td><a href='/'>Delete</a></td>
+                        <td><a class="delete-button" href='{{ path('delete_money_operation', {'id': expense.id}) }}'>Delete</a></td>
                     </tr>
                 {% endfor %}
             </table>

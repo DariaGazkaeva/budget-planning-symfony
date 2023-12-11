@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -89,8 +90,10 @@ class HistoryController extends AbstractController
         }
         return $this->render("operation.html.twig", ['form' => $form]);
     }
-//
-//    #[Route('/profile/money-operation/{id}', name: 'delete_money_operation')]
-//    public function delete(MoneyOperationRepository $moneyOperationRepository) {
-//    }
+
+    #[Route('/profile/delete-money-operation/{id}', name: 'delete_money_operation', methods: 'DELETE')]
+    public function delete(MoneyOperation $moneyOperation, MoneyOperationService $moneyOperationService) {
+        $moneyOperationService->delete($moneyOperation);
+        return new JsonResponse(status: 200);
+    }
 }
