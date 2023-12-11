@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const incomeCategories = allCategoriesDiv.querySelector('.income-ul');
     const expenseCategories = allCategoriesDiv.querySelector('.expense-ul');
     let spans = allCategoriesDiv.querySelectorAll('span');
-    const categoryNotes = document.querySelectorAll('.category-note')
+    const categoryNotes = document.querySelectorAll('.category-note');
+    const successNote = document.querySelector('.success-note');
 
     createCategoryButton.addEventListener('click', () => {
         createCategoryForm.classList.toggle('display-none');
@@ -51,6 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }).then(async response => {
             if (response.ok) {
                 createCategoryForm.classList.add('display-none');
+                successNote.classList.toggle('display-none');
+                setTimeout(() => {
+                    successNote.classList.toggle('display-none');
+                }, 3000);
                 let data = await response.json();
                 let option = `<option value="${data.id}">${data.name}</option>`;
                 let li = `<li><a href="/profile/category/${data.id}">${data.name}</a><span data-category-id="${data.id}"> X</span></li>`;

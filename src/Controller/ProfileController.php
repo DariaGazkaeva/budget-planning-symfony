@@ -240,7 +240,7 @@ class ProfileController extends AbstractController
     public function createCategory() {
         $category = new Category();
         $category->setOwner($this->security->getUser());
-        $category->setIsIncome($_POST['income']);
+        $category->setIsIncome($_POST['income'] === 'true');
         $category->setName($_POST['name']);
         $id = $this->categoryRepository->save($category);
         return new JsonResponse([
