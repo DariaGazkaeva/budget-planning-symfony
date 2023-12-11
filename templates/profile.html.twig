@@ -6,6 +6,7 @@
 {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('category.js', 'js') }}"></script>
+    <script src="{{ asset('limit.js', 'js') }}"></script>
 {% endblock %}
 {% block body %}
     <div class="main-wrapper">
@@ -114,9 +115,13 @@
                     <span>{{ limit.category.name }}</span>
                     <p>Available:</p>
                     <p>{{ limit.currentSum }} / {{ limit.totalSum }}</p>
-                    <a href="{{ path('change_limit', {'id': limit.id}) }}">Edit</a>
+                    <div>
+                        <a href="{{ path('change_limit', {'id': limit.id}) }}">Edit</a>
+                        <a class="delete-limit-btn" href="{{ path('delete_limit', {'id': limit.id}) }}">Delete</a>
+                    </div>
                 </div>
             {% endfor %}
+            <a class="create-limit-btn" href="{{ path('create_limit') }}">Create limit</a>
         </div>
     </div>
 {% endblock %}

@@ -34,6 +34,10 @@ class LimitService
         $this->limitRepository->update($limit);
     }
 
+    public function delete(Limit $limit) {
+        $this->limitRepository->delete($limit);
+    }
+
     public function findByCategory(Category $category) {
         return $this->limitRepository->findByCategoryAndOwnerId($category, $this->security->getUser()->getId());
     }

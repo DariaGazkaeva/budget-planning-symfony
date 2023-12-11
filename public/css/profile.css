@@ -59,6 +59,7 @@
     min-height: 20vh;
     justify-content: center;
     margin-top: 10px;
+    align-items: center;
 }
 
 .operations-block {
@@ -109,7 +110,7 @@
     box-shadow: 5px 4px 4px #afafaf;
     margin: 10px;
     min-width: 10%;
-    height: 100px;
+    height: 110px;
     align-items: center;
     background-color: #04AA6D;
     color: white;
@@ -137,4 +138,19 @@ li {
 
 .category-block p {
     margin: 0;
+}
+
+.create-limit-btn {
+    width: 8%;
+    height: 50px;
+    margin: 10px;
+    background-color: #e0eae3;
+    border: none;
+    box-shadow: 5px 4px 4px #afafaf;
+    cursor: pointer;
+    color: black;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

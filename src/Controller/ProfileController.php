@@ -208,6 +208,34 @@ class ProfileController extends AbstractController
         return $this->render("operation.html.twig", ['form' => $form]);
     }
 
+    #[Route('/profile/limit', name: 'create_limit')]
+    public function createLimit(Request $request) {
+        $form = $this->createFormBuilder()
+            ->add('category', ChoiceType::class, [
+                'choices' => $this->categoryRepository->findAllByType(false),
+                'choice_value' => 'id',
+                'choice_label' => function (Category $category): string {
+                    return $category->getName();
+                },
+            ])
+            ->add('total_sum', NumberType::class)
+            ->add('current_sum', NumberType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $limit = new Limit();
+            $limit->setCategory($form->getData()['category']);
+            $limit->setCurrentSum($form->getData()['current_sum']);
+            $limit->setTotalSum($form->getData()['total_sum']);
+            $limit->setOwner($this->security->getUser());
+            $this->limitService->add($limit);
+            return $this->redirectToRoute('profile');
+        }
+        return $this->render("operation.html.twig", ['form' => $form]);
+    }
+
     #[Route('/profile/category', name: 'create_category', methods: 'POST')]
     public function createCategory() {
         $category = new Category();
@@ -254,6 +282,15 @@ class ProfileController extends AbstractController
         } else {
             return new JsonResponse(status: 400);
         }
+    }
 
+    #[Route('/profile/delete-limit/{id}', name: 'delete_limit', methods: 'DELETE')]
+    public function deleteLimit(Limit $limit) {
+        if ($limit->getOwner()->getId() === $this->userId) {
+            $this->limitService->delete($limit);
+            return new JsonResponse(status: 200);
+        } else {
+            return new JsonResponse(status: 400);
+        }
     }
 }

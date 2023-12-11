@@ -38,6 +38,11 @@ class LimitRepository extends ServiceEntityRepository
         $this->entityManager->flush();
     }
 
+    public function delete(Limit $limit) {
+        $this->entityManager->remove($limit);
+        $this->entityManager->flush();
+    }
+
     /**
      * @return Limit[] Returns an array of Limit objects
      */
