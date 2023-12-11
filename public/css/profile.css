@@ -83,14 +83,19 @@
     cursor: pointer;
 }
 
-.display-none {
-    display: none;
+.all-categories {
+    display: flex;
+    flex-direction: row;
 }
 
-.category-block form {
+.category-form {
     display: flex;
     flex-direction: column;
     text-align: center;
+}
+
+.display-none {
+    display: none;
 }
 
 .two-blocks-in-row {
@@ -124,11 +129,6 @@
 
 .limit a {
     color: white;
-}
-
-.all-categories {
-    display: flex;
-    flex-direction: row;
 }
 
 li {

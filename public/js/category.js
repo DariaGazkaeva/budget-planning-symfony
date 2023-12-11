@@ -9,13 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const incomeCategories = allCategoriesDiv.querySelector('.income-ul');
     const expenseCategories = allCategoriesDiv.querySelector('.expense-ul');
     let spans = allCategoriesDiv.querySelectorAll('span');
+    const categoryNotes = document.querySelectorAll('.category-note')
 
     createCategoryButton.addEventListener('click', () => {
-        createCategoryForm.classList.remove('display-none');
+        createCategoryForm.classList.toggle('display-none');
     });
 
     allCategoriesButton.addEventListener('click', () => {
-        allCategoriesDiv.classList.remove('display-none');
+        allCategoriesDiv.classList.toggle('display-none');
+        categoryNotes.forEach(el => el.classList.toggle('display-none'));
     })
 
     spans.forEach(span => {

@@ -62,7 +62,7 @@
             </div>
             <div class="category-block">
                 <button class="create-category-button">Create category</button>
-                <form action="{{ path('create_category') }}" class="display-none">
+                <form action="{{ path('create_category') }}" class="display-none category-form">
                     <label for="name">Name</label>
                     <input type="text" name="name" id="name">
                     <label for="type">Type</label>
@@ -73,8 +73,8 @@
                     <input type="submit" value="Save">
                 </form>
                 <button class="show-all-categories-button">All categories</button>
-                <p>Click on category if you want edit it.</p>
-                <p>Click on cross next to category to delete.</p>
+                <p class="category-note display-none">Click on category if you want edit it.</p>
+                <p class="category-note display-none">Click on cross next to category to delete.</p>
                 <div class="all-categories display-none">
                     <div>
                         <h3>Income</h3>
@@ -101,7 +101,7 @@
                         </ul>
                     </div>
                 </div>
-                <p>You can not edit or delete default categories.</p>
+                <p class="category-note display-none">You can not edit or delete default categories.</p>
             </div>
         </div>
         <h3 class="center">Your limits</h3>
