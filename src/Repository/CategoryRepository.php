@@ -31,8 +31,7 @@ class CategoryRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.is_income = :type')
-            ->andWhere('c.owner = :id')
-            ->orWhere('c.owner is NULL')
+            ->andWhere('c.owner = :id OR c.owner is NULL')
             ->setParameter('type', $type)
             ->setParameter('id', $userId)
             ->orderBy('c.id', 'ASC')
