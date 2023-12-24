@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const deleteButtons = document.querySelectorAll('.delete-limit-btn');
+    const availableSums = document.querySelectorAll('p.available-sum');
     const makeHeaders = () => {
         return {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -29,5 +30,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('UNKNOWN ERROR')
             });
         })
+    });
+
+    availableSums.forEach(p => {
+        const currentSum = p.firstElementChild.textContent;
+        if (currentSum === '0') {
+            const limit = p.parentElement.style.backgroundColor = 'orange';
+        }
+        if (currentSum.startsWith('-')) {
+            const limit = p.parentElement.style.backgroundColor = 'red';
+        }
     })
 })

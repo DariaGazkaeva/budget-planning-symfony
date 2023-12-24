@@ -98,14 +98,13 @@
         </div>
         <h3 class="center">Your limits</h3>
         <div class="limits-block">
-            {% if not limits %}
-                <p>You have no limits</p>
-            {% endif %}
             {% for limit in limits %}
                 <div class="limit">
                     <span>{{ limit.category.name }}</span>
-                    <p>Available:</p>
-                    <p>{{ limit.currentSum }} / {{ limit.totalSum }}</p>
+                    <p>Left from Total:</p>
+                    <p class="available-sum">
+                        <span>{{ limit.currentSum }}</span> / <span>{{ limit.totalSum }}</span>
+                    </p>
                     <div>
                         <a href="{{ path('change_limit', {'id': limit.id}) }}">Edit</a>
                         <a class="delete-limit-btn" href="{{ path('delete_limit', {'id': limit.id}) }}">Delete</a>
