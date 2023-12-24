@@ -16,6 +16,7 @@
         <div class="form">
             {% if form %}
                 <h3>Edit</h3>
+                {% form_theme form 'bootstrap_3_layout.html.twig' %}
                 {{ form_start(form) }}
                 {{ form_widget(form) }}
                 <input type="submit" value="Save"/>

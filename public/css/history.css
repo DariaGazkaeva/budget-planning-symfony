@@ -42,3 +42,7 @@ tr:hover {background-color: #ddd;}
 .display-none {
     display: none;
 }
+
+.look-btn {
+    margin-left: 55px;
+}
