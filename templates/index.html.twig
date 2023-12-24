@@ -2,10 +2,11 @@
 {% block title %}Budget Planning{% endblock %}
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('reset.css', 'css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('index.css', 'css')}}">
 {% endblock %}
 {% block body %}
     <div class="main-wrapper">
-        <div class="greeting block">
+        <div class="greeting">
             <h1>Welcome to Budget Planning</h1>
             <p>This is a tool for accounting and planning your budget.</p>
             <a href="{{ path('registration') }}">Register</a>
