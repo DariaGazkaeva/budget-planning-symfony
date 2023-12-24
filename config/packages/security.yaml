@@ -8,7 +8,18 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+        in_memory:
+            memory:
+                users:
+                    admin:
+                        password: $2y$13$49tXo8CPoAhlgOck4DjfLeZ63I1PureLpZJ9BDX4PvG44F.oTZfES
+                        roles: 'ROLE_ADMIN'
     firewalls:
+        secured_area:
+            pattern: ^/admin
+            provider: in_memory
+            http_basic:
+                realm: "Secured Admin Area"
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
