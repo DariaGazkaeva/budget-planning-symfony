@@ -28,23 +28,22 @@ class UserRepository extends ServiceEntityRepository
         $user = $this->entityManager->find(User::class, $newUser->getId());
         $user->setBalance($newUser->getBalance());
         $user->setPassword($newUser->getPassword());
+        $user->setEmail($newUser->getEmail());
+        $user->setName($newUser->getName());
         $this->entityManager->flush();
     }
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return User[] Returns an array of User objects
+     */
+    public function findById($value): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getSingleResult();
+    }
 
     public function findByEmail($value): ?User
     {

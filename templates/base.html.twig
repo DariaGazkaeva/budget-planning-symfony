@@ -13,6 +13,9 @@
     </head>
     <body>
         <div class="header">
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin') }}">Admin</a>
+            {% endif %}
             <a href="{{ path('profile') }}">Profile</a>
             <a href="{{ path('history') }}">History</a>
             <a href="{{ path('logout') }}">Logout</a>

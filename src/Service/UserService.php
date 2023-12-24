@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -23,5 +24,14 @@ class UserService
             $this->userRepository->update($user);
         }
         return $user;
+    }
+
+    public  function findAll() {
+        return $this->userRepository->findAll();
+    }
+
+    public function update(User $user)
+    {
+        $this->userRepository->update($user);
     }
 }
