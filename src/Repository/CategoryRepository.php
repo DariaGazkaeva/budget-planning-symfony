@@ -27,11 +27,14 @@ class CategoryRepository extends ServiceEntityRepository
     /**
      * @return Category[] Returns an array of Category objects
      */
-    public function findAllByType($type): array
+    public function findAllByTypeAndUserId($type, $userId): array
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.is_income = :val')
-            ->setParameter('val', $type)
+            ->andWhere('c.is_income = :type')
+            ->andWhere('c.owner = :id')
+            ->orWhere('c.owner is NULL')
+            ->setParameter('type', $type)
+            ->setParameter('id', $userId)
             ->orderBy('c.id', 'ASC')
             ->getQuery()
             ->getResult();

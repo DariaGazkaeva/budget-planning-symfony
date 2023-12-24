@@ -65,7 +65,7 @@ class HistoryController extends AbstractController
         ];
         $form = $this->createFormBuilder($defaults)
             ->add('category', ChoiceType::class, [
-                'choices' => $categoryRepository->findAllByType($moneyOperation->isIncome()),
+                'choices' => $categoryRepository->findAllByTypeAndUserId($moneyOperation->isIncome(), $this->userId),
                 'choice_value' => 'id',
                 'choice_label' => function (Category $category): string {
                     return $category->getName();

@@ -73,7 +73,6 @@ class ProfileController extends AbstractController
             $this->moneyOperationService->add($moneyOperation);
             return $this->redirectToRoute("profile");
         }
-
         return $this->render("profile.html.twig",
             [
                 'user' => $this->security->getUser(),
@@ -83,8 +82,8 @@ class ProfileController extends AbstractController
                 'income_form' =>$incomeForm->createView(),
                 'expense_form' =>$expenseForm->createView(),
                 'limits' => $limits,
-                'income_categories' => $this->categoryRepository->findAllByType(true),
-                'expense_categories' => $this->categoryRepository->findAllByType(false)
+                'income_categories' => $this->categoryRepository->findAllByTypeAndUserId(true, $this->userId),
+                'expense_categories' => $this->categoryRepository->findAllByTypeAndUserId(false, $this->userId)
             ]);
     }
 
@@ -141,7 +140,7 @@ class ProfileController extends AbstractController
     private function createMoneyOperationForm(bool $type) : FormInterface {
         return $this->createFormBuilder()
             ->add('category', ChoiceType::class, [
-                'choices' => $this->categoryRepository->findAllByType($type),
+                'choices' => $this->categoryRepository->findAllByTypeAndUserId($type, $this->userId),
                 'choice_value' => 'id',
                 'choice_label' => function (Category $category): string {
                     return $category->getName();
@@ -185,7 +184,7 @@ class ProfileController extends AbstractController
         ];
         $form = $this->createFormBuilder($defaults)
             ->add('category', ChoiceType::class, [
-                'choices' => $this->categoryRepository->findAllByType(false),
+                'choices' => $this->categoryRepository->findAllByTypeAndUserId(false, $this->userId),
                 'choice_value' => 'id',
                 'choice_label' => function (Category $category): string {
                     return $category->getName();
@@ -212,7 +211,7 @@ class ProfileController extends AbstractController
     public function createLimit(Request $request) {
         $form = $this->createFormBuilder()
             ->add('category', ChoiceType::class, [
-                'choices' => $this->categoryRepository->findAllByType(false),
+                'choices' => $this->categoryRepository->findAllByTypeAndUserId(false, $this->userId),
                 'choice_value' => 'id',
                 'choice_label' => function (Category $category): string {
                     return $category->getName();
