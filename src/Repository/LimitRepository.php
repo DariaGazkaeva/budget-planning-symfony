@@ -56,6 +56,19 @@ class LimitRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return Limit[] Returns an array of Limit objects
+     */
+    public function findAllByCategory(Category $category): array
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.category = :val')
+            ->setParameter('val', $category)
+            ->orderBy('l.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findByCategoryAndOwnerId(Category $category, $owner): ?Limit
     {
         return $this->createQueryBuilder('l')

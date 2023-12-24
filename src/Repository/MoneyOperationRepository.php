@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\MoneyOperation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -61,12 +62,12 @@ class MoneyOperationRepository extends ServiceEntityRepository
         $this->entityManager->flush();
     }
 
-//    public function findById($id): ?MoneyOperation
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.id = :id')
-//            ->setParameter('id', $id)
-//            ->getQuery()
-//            ->getOneOrNullResult();
-//    }
+    public function findAllByCategory(Category $category)
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.category = :c')
+            ->setParameter('c', $category)
+            ->getQuery()
+            ->getResult();
+    }
 }

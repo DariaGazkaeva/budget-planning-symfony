@@ -105,6 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('FORBIDDEN OPERATION');
             } else if (response.status === 400) {
                 alert('BAD REQUEST');
+            } else if (response.status === 418) {
+                alert('You cannot delete this category because there are money operations or limits associated with it.');
             } else {
                 alert('SERVER ERROR');
             }
