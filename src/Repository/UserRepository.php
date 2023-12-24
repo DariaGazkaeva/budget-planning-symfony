@@ -27,6 +27,7 @@ class UserRepository extends ServiceEntityRepository
     public function update(User $newUser) {
         $user = $this->entityManager->find(User::class, $newUser->getId());
         $user->setBalance($newUser->getBalance());
+        $user->setPassword($newUser->getPassword());
         $this->entityManager->flush();
     }
 
