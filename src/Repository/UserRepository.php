@@ -53,4 +53,10 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function save(User $user)
+    {
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+    }
 }

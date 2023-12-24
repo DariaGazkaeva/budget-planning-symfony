@@ -76,7 +76,6 @@ class ProfileController extends AbstractController
         return $this->render("profile.html.twig",
             [
                 'user' => $this->security->getUser(),
-                'balance_modal' => false,
                 'income_sum' => $incomeSum,
                 'expense_sum' => $expenseSum,
                 'income_form' =>$incomeForm->createView(),
@@ -241,56 +240,5 @@ class ProfileController extends AbstractController
         } else {
             return new JsonResponse(status: 400);
         }
-    }
-
-    #[Route('/profile', name: 'profile_init')]
-    public function indexInit(Request $request) {
-        $incomeSum = $this->moneyOperationService->getSumForMonth($this->userId, true);
-        $expenseSum = $this->moneyOperationService->getSumForMonth($this->userId, false);
-
-        $limits = $this->limitService->findAllByUserId($this->userId);
-
-        $incomeForm = $this->createMoneyOperationForm(true);
-        $expenseForm = $this->createMoneyOperationForm(false);
-        $incomeForm->handleRequest($request);
-        $expenseForm->handleRequest($request);
-
-        if ($incomeForm->isSubmitted() && $incomeForm->isValid()) {
-            $data = $incomeForm->getData();
-            $moneyOperation = new MoneyOperation();
-            $moneyOperation->setIsIncome(true);
-            $moneyOperation->setCategory($data['category']);
-            $moneyOperation->setSum($data['sum']);
-            $moneyOperation->setDate($data['date']);
-            $moneyOperation->setDescription($data['description']);
-            $moneyOperation->setOwner($this->security->getUser());
-            $this->moneyOperationService->add($moneyOperation);
-            return $this->redirectToRoute("profile");
-        }
-
-        if ($expenseForm->isSubmitted() && $expenseForm->isValid()) {
-            $data = $expenseForm->getData();
-            $moneyOperation = new MoneyOperation();
-            $moneyOperation->setIsIncome(false);
-            $moneyOperation->setCategory($data['category']);
-            $moneyOperation->setSum($data['sum']);
-            $moneyOperation->setDate($data['date']);
-            $moneyOperation->setDescription($data['description']);
-            $moneyOperation->setOwner($this->security->getUser());
-            $this->moneyOperationService->add($moneyOperation);
-            return $this->redirectToRoute("profile");
-        }
-        return $this->render("profile.html.twig",
-            [
-                'user' => $this->security->getUser(),
-                'balance_modal' => true,
-                'income_sum' => $incomeSum,
-                'expense_sum' => $expenseSum,
-                'income_form' =>$incomeForm->createView(),
-                'expense_form' =>$expenseForm->createView(),
-                'limits' => $limits,
-                'income_categories' => $this->categoryService->findAllByTypeAndUserId(true, $this->userId),
-                'expense_categories' => $this->categoryService->findAllByTypeAndUserId(false, $this->userId)
-            ]);
     }
 }
