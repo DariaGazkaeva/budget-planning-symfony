@@ -4,8 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\MoneyOperation;
-use App\Repository\CategoryRepository;
-use App\Repository\MoneyOperationRepository;
+use App\Service\CategoryService;
 use App\Service\MoneyOperationService;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,13 +21,15 @@ class HistoryController extends AbstractController
 {
     private Security $security;
     private int $userId;
-    public function __construct(Security $security)
+    private MoneyOperationService $moneyOperationService;
+    public function __construct(Security $security, MoneyOperationService $moneyOperationService)
     {
         $this->security = $security;
         $this->userId = $this->security->getUser()->getId();
+        $this->moneyOperationService = $moneyOperationService;
     }
     #[Route('/profile/history', name: 'history')]
-    public function index(Request $request, MoneyOperationRepository $moneyOperationRepository) {
+    public function index(Request $request) {
         $defaults = [
             'start' => new DateTime(date('Y-m-01')),
             'end' => new DateTime(date('Y-m-t'))
@@ -43,20 +44,20 @@ class HistoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->render("history.html.twig", [
                 'form' => $form->createView(),
-                'history_income' => $moneyOperationRepository->findByOwnerAndTypeAndPeriod($this->userId, true, $form->getData()['start'], $form->getData()['end']),
-                'history_expense' => $moneyOperationRepository->findByOwnerAndTypeAndPeriod($this->userId, false, $form->getData()['start'], $form->getData()['end'])
+                'history_income' => $this->moneyOperationService->findByOwnerAndTypeAndPeriod($this->userId, true, $form->getData()['start'], $form->getData()['end']),
+                'history_expense' => $this->moneyOperationService->findByOwnerAndTypeAndPeriod($this->userId, false, $form->getData()['start'], $form->getData()['end'])
             ]);
         }
 
         return $this->render("history.html.twig", [
             'form' => $form->createView(),
-            'history_income' => $moneyOperationRepository->findByOwnerAndTypeAndPeriod($this->userId, true, $defaults['start'], $defaults['end']),
-            'history_expense' => $moneyOperationRepository->findByOwnerAndTypeAndPeriod($this->userId, false, $defaults['start'], $defaults['end'])
+            'history_income' => $this->moneyOperationService->findByOwnerAndTypeAndPeriod($this->userId, true, $defaults['start'], $defaults['end']),
+            'history_expense' => $this->moneyOperationService->findByOwnerAndTypeAndPeriod($this->userId, false, $defaults['start'], $defaults['end'])
         ]);
     }
 
     #[Route('/profile/money-operation/{id}', name: 'edit_money_operation')]
-    public function editGET(MoneyOperation $moneyOperation, MoneyOperationService $moneyOperationService, Request $request, CategoryRepository $categoryRepository) {
+    public function editGET(MoneyOperation $moneyOperation, MoneyOperationService $moneyOperationService, Request $request, CategoryService $categoryService) {
         $defaults = [
             'category' => $moneyOperation->getCategory(),
             'sum' => $moneyOperation->getSum(),
@@ -65,7 +66,7 @@ class HistoryController extends AbstractController
         ];
         $form = $this->createFormBuilder($defaults)
             ->add('category', ChoiceType::class, [
-                'choices' => $categoryRepository->findAllByTypeAndUserId($moneyOperation->isIncome(), $this->userId),
+                'choices' => $categoryService->findAllByTypeAndUserId($moneyOperation->isIncome(), $this->userId),
                 'choice_value' => 'id',
                 'choice_label' => function (Category $category): string {
                     return $category->getName();

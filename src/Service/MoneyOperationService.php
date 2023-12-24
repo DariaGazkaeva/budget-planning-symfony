@@ -88,4 +88,9 @@ class MoneyOperationService
             $this->limitService->edit($limit);
         }
     }
+
+    public function findByOwnerAndTypeAndPeriod(int $userId, bool $type, mixed $start, mixed $end)
+    {
+        return $this->moneyOperationRepository->findByOwnerAndTypeAndPeriod($userId, $type, $start, $end);
+    }
 }

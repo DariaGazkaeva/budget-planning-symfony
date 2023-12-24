@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Limit;
 use App\Entity\MoneyOperation;
-use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
+use App\Service\CategoryService;
 use App\Service\MoneyOperationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -26,14 +26,14 @@ class ProfileController extends AbstractController
     private Security $security;
     private int $userId;
     private MoneyOperationService $moneyOperationService;
-    private CategoryRepository $categoryRepository;
+    private CategoryService $categoryService;
 
-    public function __construct(Security $security, MoneyOperationService $moneyOperationService, CategoryRepository $categoryRepository, LimitService $limitService)
+    public function __construct(Security $security, MoneyOperationService $moneyOperationService, CategoryService $categoryService, LimitService $limitService)
     {
         $this->security = $security;
         $this->userId = $this->security->getUser()->getId();
         $this->moneyOperationService = $moneyOperationService;
-        $this->categoryRepository = $categoryRepository;
+        $this->categoryService = $categoryService;
         $this->limitService = $limitService;
     }
     #[Route('/profile', name: 'profile')]
@@ -82,65 +82,15 @@ class ProfileController extends AbstractController
                 'income_form' =>$incomeForm->createView(),
                 'expense_form' =>$expenseForm->createView(),
                 'limits' => $limits,
-                'income_categories' => $this->categoryRepository->findAllByTypeAndUserId(true, $this->userId),
-                'expense_categories' => $this->categoryRepository->findAllByTypeAndUserId(false, $this->userId)
-            ]);
-    }
-
-    #[Route('/profile', name: 'profile_init')]
-    public function indexInit(Request $request) {
-        $incomeSum = $this->moneyOperationService->getSumForMonth($this->userId, true);
-        $expenseSum = $this->moneyOperationService->getSumForMonth($this->userId, false);
-
-        $limits = $this->limitService->findAllByUserId($this->userId);
-
-        $incomeForm = $this->createMoneyOperationForm(true);
-        $expenseForm = $this->createMoneyOperationForm(false);
-        $incomeForm->handleRequest($request);
-        $expenseForm->handleRequest($request);
-
-        if ($incomeForm->isSubmitted() && $incomeForm->isValid()) {
-            $data = $incomeForm->getData();
-            $moneyOperation = new MoneyOperation();
-            $moneyOperation->setIsIncome(true);
-            $moneyOperation->setCategory($data['category']);
-            $moneyOperation->setSum($data['sum']);
-            $moneyOperation->setDate($data['date']);
-            $moneyOperation->setDescription($data['description']);
-            $moneyOperation->setOwner($this->security->getUser());
-            $this->moneyOperationService->add($moneyOperation);
-            return $this->redirectToRoute("profile");
-        }
-
-        if ($expenseForm->isSubmitted() && $expenseForm->isValid()) {
-            $data = $expenseForm->getData();
-            $moneyOperation = new MoneyOperation();
-            $moneyOperation->setIsIncome(false);
-            $moneyOperation->setCategory($data['category']);
-            $moneyOperation->setSum($data['sum']);
-            $moneyOperation->setDate($data['date']);
-            $moneyOperation->setDescription($data['description']);
-            $moneyOperation->setOwner($this->security->getUser());
-            $this->moneyOperationService->add($moneyOperation);
-            return $this->redirectToRoute("profile");
-        }
-
-        return $this->render("profile.html.twig",
-            [
-                'user' => $this->security->getUser(),
-                'balance_modal' => true,
-                'income_sum' => $incomeSum,
-                'expense_sum' => $expenseSum,
-                'income_form' =>$incomeForm->createView(),
-                'expense_form' =>$expenseForm->createView(),
-                'limits' => $limits
+                'income_categories' => $this->categoryService->findAllByTypeAndUserId(true, $this->userId),
+                'expense_categories' => $this->categoryService->findAllByTypeAndUserId(false, $this->userId)
             ]);
     }
 
     private function createMoneyOperationForm(bool $type) : FormInterface {
         return $this->createFormBuilder()
             ->add('category', ChoiceType::class, [
-                'choices' => $this->categoryRepository->findAllByTypeAndUserId($type, $this->userId),
+                'choices' => $this->categoryService->findAllByTypeAndUserId($type, $this->userId),
                 'choice_value' => 'id',
                 'choice_label' => function (Category $category): string {
                     return $category->getName();
@@ -184,7 +134,7 @@ class ProfileController extends AbstractController
         ];
         $form = $this->createFormBuilder($defaults)
             ->add('category', ChoiceType::class, [
-                'choices' => $this->categoryRepository->findAllByTypeAndUserId(false, $this->userId),
+                'choices' => $this->categoryService->findAllByTypeAndUserId(false, $this->userId),
                 'choice_value' => 'id',
                 'choice_label' => function (Category $category): string {
                     return $category->getName();
@@ -211,7 +161,7 @@ class ProfileController extends AbstractController
     public function createLimit(Request $request) {
         $form = $this->createFormBuilder()
             ->add('category', ChoiceType::class, [
-                'choices' => $this->categoryRepository->findAllByTypeAndUserId(false, $this->userId),
+                'choices' => $this->categoryService->findAllByTypeAndUserId(false, $this->userId),
                 'choice_value' => 'id',
                 'choice_label' => function (Category $category): string {
                     return $category->getName();
@@ -241,7 +191,7 @@ class ProfileController extends AbstractController
         $category->setOwner($this->security->getUser());
         $category->setIsIncome($_POST['income'] === 'true');
         $category->setName($_POST['name']);
-        $id = $this->categoryRepository->save($category);
+        $id = $this->categoryService->save($category);
         return new JsonResponse([
             'id' => $id,
             'name' => $category->getName()
@@ -267,7 +217,7 @@ class ProfileController extends AbstractController
             $updated = $category;
             $updated->setName($form->getData()['name']);
             $updated->setIsIncome($form->getData()['is_income'] === '1');
-            $this->categoryRepository->update($updated);
+            $this->categoryService->update($updated);
             return $this->redirectToRoute('profile');
         }
         return $this->render("operation.html.twig", ['form' => $form]);
@@ -276,7 +226,7 @@ class ProfileController extends AbstractController
     #[Route('/profile/delete-category/{id}', name: 'delete_category', methods: 'DELETE')]
     public function deleteCategory(Category $category) {
         if ($category->getOwner()->getId() === $this->userId) {
-            $this->categoryRepository->delete($category);
+            $this->categoryService->delete($category);
             return new JsonResponse(['categoryId' => $category->getId()], 200);
         } else {
             return new JsonResponse(status: 400);
@@ -291,5 +241,56 @@ class ProfileController extends AbstractController
         } else {
             return new JsonResponse(status: 400);
         }
+    }
+
+    #[Route('/profile', name: 'profile_init')]
+    public function indexInit(Request $request) {
+        $incomeSum = $this->moneyOperationService->getSumForMonth($this->userId, true);
+        $expenseSum = $this->moneyOperationService->getSumForMonth($this->userId, false);
+
+        $limits = $this->limitService->findAllByUserId($this->userId);
+
+        $incomeForm = $this->createMoneyOperationForm(true);
+        $expenseForm = $this->createMoneyOperationForm(false);
+        $incomeForm->handleRequest($request);
+        $expenseForm->handleRequest($request);
+
+        if ($incomeForm->isSubmitted() && $incomeForm->isValid()) {
+            $data = $incomeForm->getData();
+            $moneyOperation = new MoneyOperation();
+            $moneyOperation->setIsIncome(true);
+            $moneyOperation->setCategory($data['category']);
+            $moneyOperation->setSum($data['sum']);
+            $moneyOperation->setDate($data['date']);
+            $moneyOperation->setDescription($data['description']);
+            $moneyOperation->setOwner($this->security->getUser());
+            $this->moneyOperationService->add($moneyOperation);
+            return $this->redirectToRoute("profile");
+        }
+
+        if ($expenseForm->isSubmitted() && $expenseForm->isValid()) {
+            $data = $expenseForm->getData();
+            $moneyOperation = new MoneyOperation();
+            $moneyOperation->setIsIncome(false);
+            $moneyOperation->setCategory($data['category']);
+            $moneyOperation->setSum($data['sum']);
+            $moneyOperation->setDate($data['date']);
+            $moneyOperation->setDescription($data['description']);
+            $moneyOperation->setOwner($this->security->getUser());
+            $this->moneyOperationService->add($moneyOperation);
+            return $this->redirectToRoute("profile");
+        }
+        return $this->render("profile.html.twig",
+            [
+                'user' => $this->security->getUser(),
+                'balance_modal' => true,
+                'income_sum' => $incomeSum,
+                'expense_sum' => $expenseSum,
+                'income_form' =>$incomeForm->createView(),
+                'expense_form' =>$expenseForm->createView(),
+                'limits' => $limits,
+                'income_categories' => $this->categoryService->findAllByTypeAndUserId(true, $this->userId),
+                'expense_categories' => $this->categoryService->findAllByTypeAndUserId(false, $this->userId)
+            ]);
     }
 }
