@@ -9,6 +9,7 @@
     <script src="{{ asset('limit.js', 'js') }}"></script>
 {% endblock %}
 {% block body %}
+    {{ include('_header.html.twig') }}
     <div class="main-wrapper">
         <div class="greeting">
             <h2>Hello, {{ user.name }}</h2>

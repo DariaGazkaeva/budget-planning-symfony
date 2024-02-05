@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('admin.css', 'css')}}">
 {% endblock %}
 {% block body %}
+    {{ include('_header.html.twig') }}
     <div class="main-wrapper">
         <div class="list">
             {% for user in users %}

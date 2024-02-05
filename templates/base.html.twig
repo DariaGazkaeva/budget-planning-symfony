@@ -5,21 +5,10 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         <link rel="stylesheet" type="text/css" href="{{ asset('reset.css', 'css')}}">
-        {% block stylesheets %}
-        {% endblock %}
-
-        {% block javascripts %}
-        {% endblock %}
+        {% block stylesheets %}{% endblock %}
+        {% block javascripts %}{% endblock %}
     </head>
     <body>
-        <div class="header">
-            {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('admin') }}">Admin</a>
-            {% endif %}
-            <a href="{{ path('profile') }}">Profile</a>
-            <a href="{{ path('history') }}">History</a>
-            <a href="{{ path('logout') }}">Logout</a>
-        </div>
         {% block body %}{% endblock %}
     </body>
 </html>
