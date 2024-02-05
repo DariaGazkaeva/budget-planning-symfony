@@ -40,17 +40,23 @@ class MoneyOperationService
         $this->moneyOperationRepository->save($moneyOperation);
         $this->changeBalance($moneyOperation->getSum(), $moneyOperation->isIncome());
         if (!$moneyOperation->isIncome()) {
-            $this->changeLimit($moneyOperation->getSum(), $moneyOperation->getCategory());
+            $this->changeLimit($moneyOperation->getSum(), $moneyOperation->getCategory(), $moneyOperation->getDate());
         }
     }
 
-    public function edit(MoneyOperation $moneyOperation, $oldSum): void
+    public function edit(MoneyOperation $moneyOperation, MoneyOperation $oldMoneyOperation): void
     {
         $this->moneyOperationRepository->update($moneyOperation);
-        $x = -1 * ($oldSum - $moneyOperation->getSum());
+        $x = -1 * ($oldMoneyOperation->getSum() - $moneyOperation->getSum());
         $this->changeBalance($x, $moneyOperation->isIncome());
-        if (!$moneyOperation->isIncome()) {
-            $this->changeLimit($x, $moneyOperation->getCategory());
+        if ($oldMoneyOperation->getCategory() === $moneyOperation->getCategory() && !$moneyOperation->isIncome()) {
+            if ($moneyOperation->getDate() !== $oldMoneyOperation->getDate()) {
+                $x = $moneyOperation->getSum();
+            }
+            $this->changeLimit($x, $moneyOperation->getCategory(), $moneyOperation->getDate());
+        } else if ($oldMoneyOperation->getCategory() !== $moneyOperation->getCategory() && !$moneyOperation->isIncome()) {
+            $this->changeLimit($oldMoneyOperation->getSum() * -1, $oldMoneyOperation->getCategory(), $oldMoneyOperation->getDate());
+            $this->changeLimit($moneyOperation->getSum(), $moneyOperation->getCategory(), $moneyOperation->getDate());
         }
     }
 
@@ -59,7 +65,7 @@ class MoneyOperationService
         $this->moneyOperationRepository->delete($moneyOperation);
         $this->changeBalance($moneyOperation->getSum() * -1, $moneyOperation->isIncome());
         if (!$moneyOperation->isIncome()) {
-            $this->changeLimit($moneyOperation->getSum() * -1, $moneyOperation->getCategory());
+            $this->changeLimit($moneyOperation->getSum() * -1, $moneyOperation->getCategory(), $moneyOperation->getDate());
         }
     }
 
@@ -75,9 +81,9 @@ class MoneyOperationService
         $this->userRepository->update($user);
     }
 
-    private function changeLimit($sum, Category $category): void
+    private function changeLimit($sum, Category $category, $date): void
     {
-        $limit = $this->limitService->findByCategory($category);
+        $limit = $this->limitService->findByCategoryAndDate($category, $date);
         if ($limit !== null) {
             $max = $limit->getTotalSum();
             $current = $limit->getCurrentSum() - $sum;
@@ -85,7 +91,7 @@ class MoneyOperationService
                 $current = $max;
             }
             $limit->setCurrentSum($current);
-            $this->limitService->edit($limit);
+            $this->limitService->edit($limit, $limit);
         }
     }
 

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LimitRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LimitRepository::class)]
@@ -27,6 +28,9 @@ class Limit
 
     #[ORM\Column]
     private ?float $current_sum = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $start_date = null;
 
     public function getId(): ?int
     {
@@ -77,6 +81,18 @@ class Limit
     public function setCurrentSum(float $current_sum): static
     {
         $this->current_sum = $current_sum;
+
+        return $this;
+    }
+
+    public function getStartDate(): ?\DateTimeInterface
+    {
+        return $this->start_date;
+    }
+
+    public function setStartDate(\DateTimeInterface $start_date): static
+    {
+        $this->start_date = $start_date;
 
         return $this;
     }

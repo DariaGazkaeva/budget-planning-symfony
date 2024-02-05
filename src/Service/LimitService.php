@@ -5,20 +5,20 @@ namespace App\Service;
 use App\Entity\Category;
 use App\Entity\Limit;
 use App\Repository\LimitRepository;
-use App\Repository\UserRepository;
+use App\Repository\MoneyOperationRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 
 class LimitService
 {
     private LimitRepository $limitRepository;
     private Security $security;
-    private UserRepository $userRepository;
+    private MoneyOperationRepository $moneyOperationRepository;
 
-    public function __construct(LimitRepository $limitRepository, Security $security, UserRepository $userRepository)
+    public function __construct(LimitRepository $limitRepository, Security $security, MoneyOperationRepository $moneyOperationRepository)
     {
         $this->limitRepository = $limitRepository;
         $this->security = $security;
-        $this->userRepository = $userRepository;
+        $this->moneyOperationRepository = $moneyOperationRepository;
     }
     public function add(Limit $limit): void
     {
@@ -30,7 +30,18 @@ class LimitService
         return $this->limitRepository->findAllByOwner($userId);
     }
 
-    public function edit(Limit $limit) {
+    public function edit(Limit $limit, Limit $oldLimit) {
+        if ($limit->getStartDate() != $oldLimit->getStartDate()) {
+            $sum = 0;
+            $operations = $this->moneyOperationRepository->findAllByCategoryAndDate($limit->getCategory(), $limit->getStartDate());
+            foreach ($operations as $operation) {
+                $sum += $operation->getSum();
+            }
+            $limit->setCurrentSum($limit->getTotalSum() - $sum);
+        }
+        if ($limit->getTotalSum() != $oldLimit->getTotalSum()) {
+            $limit->setCurrentSum($limit->getCurrentSum() + $limit->getTotalSum() - $oldLimit->getTotalSum());
+        }
         $this->limitRepository->update($limit);
     }
 
@@ -38,7 +49,12 @@ class LimitService
         $this->limitRepository->delete($limit);
     }
 
-    public function findByCategory(Category $category) {
-        return $this->limitRepository->findByCategoryAndOwnerId($category, $this->security->getUser()->getId());
+    public function findByCategoryAndDate(Category $category, $date) {
+        return $this->limitRepository->findByCategoryAndOwnerIdAndDate($category, $this->security->getUser()->getId(), $date);
+    }
+
+    public function findByCategoryAndOwner(Category $category, $owner)
+    {
+        return $this->limitRepository->findByCategoryAndOwner($category, $owner);
     }
 }

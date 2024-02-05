@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -129,7 +130,8 @@ class ProfileController extends AbstractController
         $defaults = [
             'category' => $limit->getCategory(),
             'total_sum' => $limit->getTotalSum(),
-            'current_sum' => $limit->getCurrentSum()
+            'current_sum' => $limit->getCurrentSum(),
+            'start_date' => $limit->getStartDate(),
         ];
         $form = $this->createFormBuilder($defaults)
             ->add('category', ChoiceType::class, [
@@ -141,16 +143,24 @@ class ProfileController extends AbstractController
             ])
             ->add('total_sum', NumberType::class)
             ->add('current_sum', NumberType::class)
+            ->add('start_date', DateType::class, ['widget' => 'single_text'])
             ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $oldLimit = new Limit();
+            $oldLimit->setOwner($limit->getOwner());
+            $oldLimit->setCategory($limit->getCategory());
+            $oldLimit->setCurrentSum($limit->getCurrentSum());
+            $oldLimit->setStartDate($limit->getStartDate());
+            $oldLimit->setTotalSum($limit->getTotalSum());
             $updated = $limit;
             $updated->setCategory($form->getData()['category']);
             $updated->setCurrentSum($form->getData()['current_sum']);
             $updated->setTotalSum($form->getData()['total_sum']);
-            $this->limitService->edit($updated);
+            $updated->setStartDate($form->getData()['start_date']);
+            $this->limitService->edit($updated, $oldLimit);
             return $this->redirectToRoute('profile');
         }
         return $this->render("operation.html.twig", ['form' => $form]);
@@ -168,16 +178,24 @@ class ProfileController extends AbstractController
             ])
             ->add('total_sum', NumberType::class)
             ->add('current_sum', NumberType::class)
+            ->add('start_date', DateType::class, ['widget' => 'single_text'])
             ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($this->limitService->findByCategoryAndOwner($form->getData()['category'], $this->security->getUser()) != null) {
+                $form->addError(new FormError('You already have a limit with this category'));
+                return $this->render("operation.html.twig", ['form' => $form]);
+            }
+
             $limit = new Limit();
             $limit->setCategory($form->getData()['category']);
             $limit->setCurrentSum($form->getData()['current_sum']);
             $limit->setTotalSum($form->getData()['total_sum']);
             $limit->setOwner($this->security->getUser());
+            $limit->setStartDate($form->getData()['start_date']);
             $this->limitService->add($limit);
             return $this->redirectToRoute('profile');
         }

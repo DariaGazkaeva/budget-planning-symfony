@@ -35,6 +35,7 @@ class LimitRepository extends ServiceEntityRepository
         $limit->setCurrentSum($newLimit->getCurrentSum());
         $limit->setTotalSum($newLimit->getTotalSum());
         $limit->setCategory($newLimit->getCategory());
+        $limit->setStartDate($newLimit->getStartDate());
         $this->entityManager->flush();
     }
 
@@ -69,7 +70,20 @@ class LimitRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findByCategoryAndOwnerId(Category $category, $owner): ?Limit
+    public function findByCategoryAndOwnerIdAndDate(Category $category, $owner, $date): ?Limit
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.category = :c')
+            ->andWhere('l.owner = :o')
+            ->andWhere('l.start_date <= :d')
+            ->setParameter('c', $category->getId())
+            ->setParameter('o', $owner)
+            ->setParameter('d', $date)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findByCategoryAndOwner(Category $category, $owner)
     {
         return $this->createQueryBuilder('l')
             ->andWhere('l.category = :c')
