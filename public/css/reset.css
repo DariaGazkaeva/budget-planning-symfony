@@ -8,7 +8,7 @@ html, body {
     padding: 0;
     border: 0;
     vertical-align: baseline;
-    font-family: system-ui;
+    font: italic 16px cursive;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
@@ -22,6 +22,11 @@ blockquote, q {
     quotes: none;
 }
 
+a {
+    color: #073412;
+    font-weight: bold;
+}
+
 .header {
     height: 30px;
     background-color: #273034;
@@ -30,4 +35,9 @@ blockquote, q {
 
 .header a {
     color: white;
+}
+
+input[type=submit], button[type=submit] {
+    font: italic 16px cursive;
+    margin: 2px;
 }

@@ -17,6 +17,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 10px;
+    transition: 0.5s;
+}
+
+.operations-info:hover {
+    transform: scale(1.05);
 }
 
 .operations-info td {
@@ -46,6 +52,11 @@
     text-align: center;
     background-color: #e0eae3;
     align-items: center;
+    transition: 0.5s;
+}
+
+.operation-forms:hover {
+    transform: scale(1.02);
 }
 
 .operation-forms div {
@@ -83,6 +94,11 @@
     border: none;
     box-shadow: 5px 4px 4px #afafaf;
     cursor: pointer;
+    font: italic 16px cursive;
+    transition: 0.5s;
+}
+.category-block button:hover {
+    transform: scale(1.1);
 }
 
 .all-categories {
@@ -115,6 +131,11 @@
     align-items: center;
     background-color: #04AA6D;
     color: white;
+    transition: 0.5s;
+}
+
+.limit:hover {
+    transform: scale(1.1);
 }
 
 .limit span {
@@ -154,4 +175,20 @@ li {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: 0.5s;
+}
+
+.create-limit-btn:hover {
+    transform: scale(1.1);
+}
+
+.div-categories {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 5px;
+}
+
+.income-ul, .expense-ul {
+    padding: 0;
 }
