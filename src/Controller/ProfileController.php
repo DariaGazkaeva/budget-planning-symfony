@@ -98,7 +98,7 @@ class ProfileController extends AbstractController
             ])
             ->add('sum', NumberType::class)
             ->add('date', DateType::class, ['widget' => 'single_text',])
-            ->add('description', TextType::class)
+            ->add('description', TextType::class, ['required' => false])
             ->getForm();
     }
 

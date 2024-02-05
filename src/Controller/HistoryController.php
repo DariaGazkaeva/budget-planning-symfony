@@ -74,19 +74,25 @@ class HistoryController extends AbstractController
             ])
             ->add('sum', NumberType::class)
             ->add('date', DateType::class, ['widget' => 'single_text',])
-            ->add('description', TextType::class)
+            ->add('description', TextType::class, ['required' => false])
             ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $oldSum = $moneyOperation->getSum();
+            $oldMoneyOperation = new MoneyOperation();
+            $oldMoneyOperation->setOwner($moneyOperation->getOwner());
+            $oldMoneyOperation->setIsIncome($moneyOperation->isIncome());
+            $oldMoneyOperation->setSum($moneyOperation->getSum());
+            $oldMoneyOperation->setDate($moneyOperation->getDate());
+            $oldMoneyOperation->setDescription($moneyOperation->getDescription());
+            $oldMoneyOperation->setCategory($moneyOperation->getCategory());
             $updated = $moneyOperation;
             $updated->setDate($form->getData()['date']);
             $updated->setSum($form->getData()['sum']);
             $updated->setCategory($form->getData()['category']);
             $updated->setDescription($form->getData()['description']);
-            $moneyOperationService->edit($updated, $oldSum);
+            $moneyOperationService->edit($updated, $oldMoneyOperation);
             return $this->redirectToRoute('history');
         }
         return $this->render("operation.html.twig", ['form' => $form]);
