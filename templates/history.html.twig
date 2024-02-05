@@ -55,7 +55,7 @@
                         <td>{{ income.date | date("d.m.Y", "Europe/Moscow") }}</td>
                         <td>{{ income.description }}</td>
                         <td><a href='{{ path('edit_money_operation', {'id': income.id}) }}'>Edit</a></td>
-                        <td><a href='/'>Delete</a></td>
+                        <td><a class="delete-button" href='{{ path('delete_money_operation', {'id': income.id}) }}'>Delete</a></td>
                     </tr>
                 {% endfor %}
             </table>
