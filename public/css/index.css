@@ -1,4 +1,4 @@
-.greeting, .form {
+.center-block {
     text-align: center;
     position: absolute;
     top: 50%;
@@ -6,7 +6,31 @@
     transform: translate(-50%, -50%);
 }
 
+.greeting, .form, .buttons {
+    padding-right: 3vw;
+    padding-left: 3vw;
+    padding-bottom: 3vh;
+    box-shadow: 2px 2px 5px 1px #878787;
+}
+
+.form, .buttons {
+    margin-bottom: 10%;
+    margin-top: 10%;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 2vh;
+    padding-top: 1vh;
+}
+
 form div, form {
     display: flex;
     flex-direction: column;
+}
+
+h1 {
+    padding-top: 2vh;
 }

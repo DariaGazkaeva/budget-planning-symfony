@@ -6,22 +6,28 @@
 {% endblock %}
 {% block body %}
     <div class="main-wrapper">
-        <div class="form">
-            <h1>Log in</h1>
-            {% if error %}
-                <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
-            <form action="{{ path('login') }}" method="post">
-                <label for="email">Email:</label>
-                <input type="text" id="email" name="_username" value="{{ last_username }}"/>
+        <div class="center-block">
+            <div class="form">
+                <h1>Log in</h1>
+                {% if error %}
+                    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                <form action="{{ path('login') }}" method="post">
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" name="_username" value="{{ last_username }}"/>
 
-                <label for="password">Пароль:</label>
-                <input type="password" id="password" name="_password"/>
+                    <label for="password">Пароль:</label>
+                    <input type="password" id="password" name="_password"/>
 
-                <input type="hidden" name="_target_path" value="/profile"/>
+                    <input type="hidden" name="_target_path" value="/profile"/>
 
-                <input type="submit" value="Send"/>
-            </form>
+                    <input type="submit" value="Send"/>
+                </form>
+            </div>
+            <div class="buttons">
+                <a href="{{ path('index') }}">Main</a>
+                <a href="{{ path('registration') }}">Register</a>
+            </div>
         </div>
     </div>
 {% endblock %}

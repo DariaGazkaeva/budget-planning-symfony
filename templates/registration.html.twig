@@ -6,9 +6,15 @@
 {% endblock %}
 {% block body %}
     <div class="main-wrapper">
-        <div class="form">
-            <h1>Registration</h1>
-            {{ form(form) }}
+        <div class="center-block">
+            <div class="form">
+                <h1>Registration</h1>
+                {{ form(form) }}
+            </div>
+            <div class="buttons">
+                <a href="{{ path('index') }}">Main</a>
+                <a href="{{ path('login') }}">Log in</a>
+            </div>
         </div>
     </div>
 {% endblock %}
