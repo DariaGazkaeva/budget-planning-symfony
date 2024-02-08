@@ -17,3 +17,9 @@
     display: flex;
     flex-direction: column;
 }
+
+form ul {
+    margin: 0;
+    padding: 0;
+    color: #b00e00;
+}

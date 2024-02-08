@@ -45,7 +45,7 @@
 .operation-forms {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 90%;
     justify-content: space-around;
     box-shadow: 5px 4px 4px #afafaf;
     padding: 5px;
@@ -67,15 +67,18 @@
 .limits-block {
     display: flex;
     flex-direction: row;
-    min-height: 20vh;
+    min-height: 17vh;
     justify-content: center;
-    margin-top: 10px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .operations-block {
     height: 55vh;
     margin: 10px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
 }
 
 .category-block {
@@ -119,6 +122,17 @@
 .two-blocks-in-row {
     display: grid;
     grid-template-columns:  50% 50%;
+    height: 59vh;
+}
+
+.limits {
+    height: 27vh;
+    text-align: center;
+}
+
+.limits h3, .limits p {
+    margin: 0;
+    height: 5vh;
 }
 
 .limit {
@@ -127,11 +141,12 @@
     box-shadow: 5px 4px 4px #afafaf;
     margin: 10px;
     min-width: 10%;
-    height: 110px;
+    height: 14vh;
     align-items: center;
     background-color: #04AA6D;
     color: white;
     transition: 0.5s;
+    max-width: 90vw;
 }
 
 .limit:hover {
@@ -140,6 +155,7 @@
 
 .limit span {
     font-weight: bold;
+    word-break: break-all;
 }
 
 .limit p {
@@ -191,4 +207,14 @@ li {
 
 .income-ul, .expense-ul {
     padding: 0;
+}
+
+.blink {
+    animation: blink 4s infinite;
+}
+
+@keyframes blink {
+    50% {
+        background-color: orange;
+    }
 }
