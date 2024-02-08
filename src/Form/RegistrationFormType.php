@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -37,7 +38,7 @@ class RegistrationFormType extends AbstractType
             ->add("password", RepeatedType::class, [
                 'constraints' => [
                     new NotBlank(message: "Password must not be empty"),
-                    new Length(max: "256", maxMessage: "Email must not be longer than 256")
+                    new Length(min: "5", max: "256", maxMessage: "Email must not be longer than 256")
                 ],
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match',
@@ -54,6 +55,9 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'constraints' => [
+                new UniqueEntity(fields: ['email'], message: 'This email is already taken'),
+            ],
         ]);
     }
 }

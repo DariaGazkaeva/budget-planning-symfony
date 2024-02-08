@@ -16,6 +16,7 @@
 .form, .buttons {
     margin-bottom: 10%;
     margin-top: 10%;
+    width: 17vw;
 }
 
 .buttons {
@@ -33,4 +34,10 @@ form div, form {
 
 h1 {
     padding-top: 2vh;
+}
+
+form ul {
+    margin: 0;
+    padding: 0;
+    color: #b00e00;
 }
