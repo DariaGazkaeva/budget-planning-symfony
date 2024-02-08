@@ -177,7 +177,6 @@ class ProfileController extends AbstractController
                 },
             ])
             ->add('total_sum', NumberType::class)
-            ->add('current_sum', NumberType::class)
             ->add('start_date', DateType::class, ['widget' => 'single_text'])
             ->getForm();
 
@@ -190,9 +189,12 @@ class ProfileController extends AbstractController
                 return $this->render("operation.html.twig", ['form' => $form]);
             }
 
+            $sum = $this->moneyOperationService->findSumByCategoryAndStartDate($this->userId,
+                $form->getData()['category'], $form->getData()['start_date']);
+
             $limit = new Limit();
             $limit->setCategory($form->getData()['category']);
-            $limit->setCurrentSum($form->getData()['current_sum']);
+            $limit->setCurrentSum($form->getData()['total_sum'] - $sum);
             $limit->setTotalSum($form->getData()['total_sum']);
             $limit->setOwner($this->security->getUser());
             $limit->setStartDate($form->getData()['start_date']);

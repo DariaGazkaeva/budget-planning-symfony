@@ -33,7 +33,11 @@ class LimitService
     public function edit(Limit $limit, Limit $oldLimit) {
         if ($limit->getStartDate() != $oldLimit->getStartDate()) {
             $sum = 0;
-            $operations = $this->moneyOperationRepository->findAllByCategoryAndDate($limit->getCategory(), $limit->getStartDate());
+            $operations = $this->moneyOperationRepository->findAllByCategoryAndDate(
+                $this->security->getUser()->getId(),
+                $limit->getCategory(),
+                $limit->getStartDate()
+            );
             foreach ($operations as $operation) {
                 $sum += $operation->getSum();
             }

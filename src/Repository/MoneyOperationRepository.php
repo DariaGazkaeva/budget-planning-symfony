@@ -71,13 +71,15 @@ class MoneyOperationRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findAllByCategoryAndDate(Category $category, $date)
+    public function findAllByCategoryAndDate($userId, Category $category, $date)
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.category = :c')
             ->andWhere('m.date >= :d')
+            ->andWhere('m.owner = :u')
             ->setParameter('c', $category)
             ->setParameter('d', $date)
+            ->setParameter('u', $userId)
             ->getQuery()
             ->getResult();
     }

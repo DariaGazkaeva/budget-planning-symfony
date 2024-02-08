@@ -99,4 +99,14 @@ class MoneyOperationService
     {
         return $this->moneyOperationRepository->findByOwnerAndTypeAndPeriod($userId, $type, $start, $end);
     }
+
+    public function findSumByCategoryAndStartDate(int $userId, Category $category, mixed $start)
+    {
+        $sum = 0;
+        $operations = $this->moneyOperationRepository->findAllByCategoryAndDate($userId, $category, $start);
+        foreach ($operations as $operation) {
+            $sum += $operation->getSum();
+        }
+        return $sum;
+    }
 }
