@@ -39,10 +39,9 @@
 
 .operations-info table {
     width: 90%;
-    margin-top: 20px;
 }
 
-.operation-forms {
+.operation-forms, .category-forms {
     display: flex;
     flex-direction: row;
     width: 90%;
@@ -55,7 +54,11 @@
     transition: 0.5s;
 }
 
-.operation-forms:hover {
+.category-forms {
+    flex-direction: column;
+}
+
+.operation-forms:hover, .category-forms:hover {
     transform: scale(1.02);
 }
 
@@ -75,7 +78,6 @@
 
 .operations-block {
     height: 55vh;
-    margin: 10px;
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -86,6 +88,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    height: 55vh;
 }
 
 .category-block button {
@@ -99,6 +102,8 @@
     cursor: pointer;
     font: italic 16px cursive;
     transition: 0.5s;
+    min-height: 45px;
+    margin: 10px;
 }
 .category-block button:hover {
     transform: scale(1.1);
@@ -111,8 +116,20 @@
 
 .category-form {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     text-align: center;
+    padding-bottom: 10px;
+}
+
+.category-form div {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+}
+
+.category-form input[type=submit] {
+    height: 30px;
+    align-self: flex-end;
 }
 
 .display-none {
@@ -147,6 +164,7 @@
     color: white;
     transition: 0.5s;
     max-width: 90vw;
+    min-height: 95px;
 }
 
 .limit:hover {
@@ -192,6 +210,7 @@ li {
     align-items: center;
     justify-content: center;
     transition: 0.5s;
+    min-width: 55px;
 }
 
 .create-limit-btn:hover {
@@ -203,6 +222,7 @@ li {
     flex-direction: column;
     text-align: center;
     margin: 5px;
+    padding: 10px;
 }
 
 .income-ul, .expense-ul {

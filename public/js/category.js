@@ -1,25 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const createCategoryWidget = document.querySelector('.category-block');
-    const createCategoryForm = createCategoryWidget.querySelector("form");
-    const createCategoryButton = document.querySelector(".create-category-button");
+    const categoryWidget = document.querySelector('.category-block');
+    const createCategoryForm = categoryWidget.querySelector("form");
     const categorySelectIncome = document.querySelector(".income-form select");
     const categorySelectExpense = document.querySelector(".expense-form select");
-    const allCategoriesButton = document.querySelector('.show-all-categories-button');
     const allCategoriesDiv = document.querySelector('.all-categories');
     const incomeCategories = allCategoriesDiv.querySelector('.income-ul');
     const expenseCategories = allCategoriesDiv.querySelector('.expense-ul');
     let spans = allCategoriesDiv.querySelectorAll('span');
     const categoryNotes = document.querySelectorAll('.category-note');
     const successNote = document.querySelector('.success-note');
-
-    createCategoryButton.addEventListener('click', () => {
-        createCategoryForm.classList.toggle('display-none');
-    });
-
-    allCategoriesButton.addEventListener('click', () => {
-        allCategoriesDiv.classList.toggle('display-none');
-        categoryNotes.forEach(el => el.classList.toggle('display-none'));
-    })
 
     spans.forEach(span => {
         span.addEventListener('click', () => {
@@ -51,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
             body: request
         }).then(async response => {
             if (response.ok) {
-                createCategoryForm.classList.add('display-none');
                 successNote.classList.toggle('display-none');
                 setTimeout(() => {
                     successNote.classList.toggle('display-none');

@@ -17,6 +17,7 @@
     margin-bottom: 10%;
     margin-top: 10%;
     width: 17vw;
+    min-width: 200px;
 }
 
 .buttons {
