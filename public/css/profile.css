@@ -56,6 +56,9 @@
 
 .category-forms {
     flex-direction: column;
+    max-height: 35vh;
+    justify-content: flex-start;
+    width: 80%;
 }
 
 .operation-forms:hover, .category-forms:hover {
@@ -112,6 +115,7 @@
 .all-categories {
     display: flex;
     flex-direction: row;
+    overflow-y: auto;
 }
 
 .category-form {
@@ -223,6 +227,10 @@ li {
     text-align: center;
     margin: 5px;
     padding: 10px;
+}
+
+.div-categories h3 {
+    margin: 0;
 }
 
 .income-ul, .expense-ul {
