@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const createCategoryButton = document.querySelector('.create-category-block button');
-    const createCategoryForm = document.querySelector('.create-category-form');
+    const createCategoryFormContainer = document.querySelector('.create-category-form');
+    const createCategoryForm = document.querySelector('.create-category-form form');
     const categorySelectIncome = document.querySelector('.income-form select');
     const categorySelectExpense = document.querySelector('.expense-form select');
     const allCategoriesDiv = document.querySelector('.all-categories');
@@ -18,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const toggleCreateCategory = () => {
         createCategoryButton.classList.toggle('display-none');
-        createCategoryForm.classList.toggle('display-none');
+        createCategoryFormContainer.classList.toggle('display-none');
     }
 
     createCategoryButton.addEventListener('click', toggleCreateCategory)
@@ -71,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('BAD REQUEST');
             } else {
                 alert('SERVER ERROR');
+                console.log
             }
         }).catch(error => {
             console.log(error);
