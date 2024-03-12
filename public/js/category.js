@@ -1,20 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const categoryWidget = document.querySelector('.category-block');
-    const createCategoryForm = categoryWidget.querySelector("form");
-    const categorySelectIncome = document.querySelector(".income-form select");
-    const categorySelectExpense = document.querySelector(".expense-form select");
+    const createCategoryButton = document.querySelector('.create-category-block button');
+    const createCategoryForm = document.querySelector('.create-category-form');
+    const categorySelectIncome = document.querySelector('.income-form select');
+    const categorySelectExpense = document.querySelector('.expense-form select');
     const allCategoriesDiv = document.querySelector('.all-categories');
     const incomeCategories = allCategoriesDiv.querySelector('.income-ul');
     const expenseCategories = allCategoriesDiv.querySelector('.expense-ul');
     let spans = allCategoriesDiv.querySelectorAll('span');
-    const categoryNotes = document.querySelectorAll('.category-note');
     const successNote = document.querySelector('.success-note');
+    const closeCategoryForm = document.querySelector('.close-create-category');
 
     spans.forEach(span => {
         span.addEventListener('click', () => {
             onClickDelete(span)
         })
     })
+
+    const toggleCreateCategory = () => {
+        createCategoryButton.classList.toggle('display-none');
+        createCategoryForm.classList.toggle('display-none');
+    }
+
+    createCategoryButton.addEventListener('click', toggleCreateCategory)
+    closeCategoryForm.addEventListener('click', toggleCreateCategory)
 
     const makeHeaders = () => {
         return {

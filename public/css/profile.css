@@ -95,18 +95,17 @@
 }
 
 .category-block button {
-    width: 60%;
     height: 10%;
     background-color: #04AA6D;
     color: white;
-    font-weight: bold;
     border: none;
     box-shadow: 5px 4px 4px #afafaf;
     cursor: pointer;
-    font: italic 16px cursive;
+    font: italic bold 16px cursive;
     transition: 0.5s;
     min-height: 45px;
     margin: 10px;
+    text-align: center;
 }
 .category-block button:hover {
     transform: scale(1.1);
@@ -120,7 +119,7 @@
 
 .category-form {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     text-align: center;
     padding-bottom: 10px;
 }
@@ -133,12 +132,22 @@
 
 .category-form input[type=submit] {
     height: 30px;
-    align-self: flex-end;
+    align-self: center;
 }
 
 .display-none {
     display: none;
+    transition: 2s;
 }
+
+/*@keyframes display-none {*/
+/*    0% {*/
+/*        opacity: 0;*/
+/*    }*/
+/*    100% {*/
+/*        opacity: 1;*/
+/*    }*/
+/*}*/
 
 .two-blocks-in-row {
     display: grid;
@@ -156,7 +165,7 @@
     height: 5vh;
 }
 
-.limit {
+.limit, .create-button {
     display: flex;
     flex-direction: column;
     box-shadow: 5px 4px 4px #afafaf;
@@ -245,4 +254,26 @@ li {
     50% {
         background-color: orange;
     }
+}
+
+.create-category-form {
+    background-color: #e0eae3;
+    box-shadow: 5px 4px 4px #afafaf;
+    padding: 10px;
+    transition: 0.5s;
+}
+
+.create-category-form:hover {
+    transform: scale(1.05);
+}
+
+.close-create-category {
+    float: right;
+    cursor: pointer;
+}
+
+.create-category-block {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
 }
