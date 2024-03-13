@@ -82,25 +82,49 @@
                         </div>
                     </div>
                 </div>
-                <div class="create-category-block">
-                    <button>Create category</button>
-                    <span class="success-note display-none">Success!</span>
-                    <div class="create-category-form display-none">
-                        <span class="close-create-category">✗</span>
-                        <form action="{{ path('create_category') }}" class="category-form">
-                            <div>
-                                <label for="name">Name</label>
-                                <input type="text" name="name" id="name">
-                            </div>
-                            <div>
-                                <label for="type">Type</label>
-                                <select name="type" id="type">
-                                    <option value="true" selected>Income</option>
-                                    <option value="false">Expense</option>
-                                </select>
-                            </div>
-                            <input type="submit" value="Save">
-                        </form>
+                <div class="create-block">
+                    <div class="create-category-block">
+                        <button>Create category</button>
+                        <span class="success-note display-none">Success!</span>
+                        <div class="create-category-form display-none">
+                            <span class="close-create-category">✗</span>
+                            <form action="{{ path('create_category') }}" class="category-form">
+                                <div>
+                                    <label for="name">Name</label>
+                                    <input type="text" name="name" id="name">
+                                </div>
+                                <div>
+                                    <label for="type">Type</label>
+                                    <select name="type" id="type">
+                                        <option value="true" selected>Income</option>
+                                        <option value="false">Expense</option>
+                                    </select>
+                                </div>
+                                <input type="submit" value="Save">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="create-limit-block">
+{#                        <button>Create limit</button>#}
+                          <button><a href="{{ path('create_limit') }}">Create limit</a></button>
+{#                        <span class="success-note display-none">Success!</span>#}
+{#                        <div class="create-limit-form display-none">#}
+{#                            <span class="close-create-limit">✗</span>#}
+{#                            <form action="{{ path('create_limit') }}" class="limit-form">#}
+{#                                <div>#}
+{#                                    <label for="name">Name</label>#}
+{#                                    <input type="text" name="name" id="name">#}
+{#                                </div>#}
+{#                                <div>#}
+{#                                    <label for="type">Type</label>#}
+{#                                    <select name="type" id="type">#}
+{#                                        <option value="true" selected>Income</option>#}
+{#                                        <option value="false">Expense</option>#}
+{#                                    </select>#}
+{#                                </div>#}
+{#                                <input type="submit" value="Save">#}
+{#                            </form>#}
+{#                        </div>#}
                     </div>
                 </div>
             </div>
@@ -121,7 +145,6 @@
                         </div>
                     </div>
                 {% endfor %}
-                <a class="create-limit-btn" href="{{ path('create_limit') }}">Create limit</a>
             </div>
         </div>
     </div>
