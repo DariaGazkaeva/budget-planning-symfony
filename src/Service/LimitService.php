@@ -20,9 +20,9 @@ class LimitService
         $this->security = $security;
         $this->moneyOperationRepository = $moneyOperationRepository;
     }
-    public function add(Limit $limit): void
+    public function add(Limit $limit)
     {
-        $this->limitRepository->save($limit);
+        return $this->limitRepository->save($limit);
     }
 
     public function findAllByUserId($userId): array

@@ -20,7 +20,7 @@
             <a href="{{ path('change_balance') }}">Change balance</a>
         </div>
         <div class="two-blocks-in-row">
-            <div class="operations-block">
+            <div class="left-block">
                 <div class="operations-info">
                     <table>
                         <tr>
@@ -53,7 +53,7 @@
                     </div>
                 </div>
             </div>
-            <div class="category-block">
+            <div class="right-block">
                 <div class="category-forms">
                     <div class="all-categories">
                         <div class="div-categories">
@@ -105,26 +105,30 @@
                         </div>
                     </div>
                     <div class="create-limit-block">
-{#                        <button>Create limit</button>#}
-                          <button><a href="{{ path('create_limit') }}">Create limit</a></button>
-{#                        <span class="success-note display-none">Success!</span>#}
-{#                        <div class="create-limit-form display-none">#}
-{#                            <span class="close-create-limit">✗</span>#}
-{#                            <form action="{{ path('create_limit') }}" class="limit-form">#}
-{#                                <div>#}
-{#                                    <label for="name">Name</label>#}
-{#                                    <input type="text" name="name" id="name">#}
-{#                                </div>#}
-{#                                <div>#}
-{#                                    <label for="type">Type</label>#}
-{#                                    <select name="type" id="type">#}
-{#                                        <option value="true" selected>Income</option>#}
-{#                                        <option value="false">Expense</option>#}
-{#                                    </select>#}
-{#                                </div>#}
-{#                                <input type="submit" value="Save">#}
-{#                            </form>#}
-{#                        </div>#}
+                        <button>Create limit</button>
+                        <span class="success-note display-none">Success!</span>
+                        <div class="create-limit-form display-none">
+                            <span class="close-create-limit">✗</span>
+                            <form action="{{ path('create_limit') }}" class="limit-form">
+                                <div>
+                                    <label for="category">Category</label>
+                                    <select name="category" id="category">
+                                        {% for category in expense_categories %}
+                                            <option value="{{ category.id }}">{{ category.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="total_sum">Total sum</label>
+                                    <input type="number" id="total_sum">
+                                </div>
+                                <div>
+                                    <label for="start_date">Start date</label>
+                                    <input type="date" id="start_date">
+                                </div>
+                                <input type="submit" value="Save">
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -28,6 +28,7 @@ class LimitRepository extends ServiceEntityRepository
     public function save(Limit $limit) {
         $this->entityManager->persist($limit);
         $this->entityManager->flush();
+        return $limit->getId();
     }
 
     public function update(Limit $newLimit) {

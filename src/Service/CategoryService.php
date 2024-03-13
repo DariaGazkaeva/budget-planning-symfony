@@ -46,4 +46,9 @@ class CategoryService
             return false;
         }
     }
+
+    public function findById(int $id) : Category
+    {
+        return $this->categoryRepository->find($id);
+    }
 }

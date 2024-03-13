@@ -79,14 +79,14 @@
     flex-wrap: wrap;
 }
 
-.operations-block {
+.left-block {
     height: 55vh;
     align-items: center;
     display: flex;
     flex-direction: column;
 }
 
-.category-block {
+.right-block {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -94,7 +94,7 @@
     height: 55vh;
 }
 
-.category-block button {
+.right-block button {
     height: 10%;
     background-color: #04AA6D;
     color: white;
@@ -108,7 +108,7 @@
     text-align: center;
     min-width: 15vw;
 }
-.category-block button:hover {
+.right-block button:hover {
     transform: scale(1.1);
 }
 
@@ -118,20 +118,20 @@
     overflow-y: auto;
 }
 
-.category-form {
+.category-form, .limit-form {
     display: flex;
     flex-direction: column;
     text-align: center;
     padding-bottom: 10px;
 }
 
-.category-form div {
+.category-form div, .limit-form div {
     display: flex;
     flex-direction: column;
     margin: 5px;
 }
 
-.category-form input[type=submit] {
+.category-form input[type=submit], .limit-form input[type=submit] {
     height: 30px;
     align-self: center;
 }
@@ -197,7 +197,7 @@ li {
     cursor: pointer;
 }
 
-.category-block p {
+.right-block p {
     margin: 0;
 }
 
@@ -248,18 +248,18 @@ li {
     }
 }
 
-.create-category-form {
+.create-category-form, .create-limit-form {
     background-color: #e0eae3;
     box-shadow: 5px 4px 4px #afafaf;
     padding: 10px;
     transition: 0.5s;
 }
 
-.create-category-form:hover {
+.create-category-form:hover, .create-limit-form:hover {
     transform: scale(1.05);
 }
 
-.close-create-category {
+.close-create-category, .close-create-limit {
     float: right;
     cursor: pointer;
 }
@@ -273,5 +273,9 @@ li {
 .create-block {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    align-items: center;
+}
+
+.create-block div {
+    margin: 5px;
 }

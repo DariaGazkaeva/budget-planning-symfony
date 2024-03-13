@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const incomeCategories = allCategoriesDiv.querySelector('.income-ul');
     const expenseCategories = allCategoriesDiv.querySelector('.expense-ul');
     let spans = allCategoriesDiv.querySelectorAll('span');
-    const successNote = document.querySelector('.success-note');
+    const successNote = document.querySelector('.create-category-block .success-note');
     const closeCategoryForm = document.querySelector('.close-create-category');
 
     spans.forEach(span => {
@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
         createCategoryFormContainer.classList.toggle('display-none');
     }
 
-    createCategoryButton.addEventListener('click', toggleCreateCategory)
-    closeCategoryForm.addEventListener('click', toggleCreateCategory)
+    createCategoryButton.addEventListener('click', toggleCreateCategory);
+    closeCategoryForm.addEventListener('click', toggleCreateCategory);
 
     const makeHeaders = () => {
         return {
@@ -72,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('BAD REQUEST');
             } else {
                 alert('SERVER ERROR');
-                console.log
             }
         }).catch(error => {
             console.log(error);

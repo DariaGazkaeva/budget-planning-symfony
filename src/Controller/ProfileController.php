@@ -8,6 +8,7 @@ use App\Entity\MoneyOperation;
 use App\Repository\UserRepository;
 use App\Service\CategoryService;
 use App\Service\MoneyOperationService;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -166,43 +167,64 @@ class ProfileController extends AbstractController
         return $this->render("operation.html.twig", ['form' => $form]);
     }
 
-    #[Route('/profile/limit', name: 'create_limit')]
-    public function createLimit(Request $request) {
-        $form = $this->createFormBuilder()
-            ->add('category', ChoiceType::class, [
-                'choices' => $this->categoryService->findAllByTypeAndUserId(false, $this->userId),
-                'choice_value' => 'id',
-                'choice_label' => function (Category $category): string {
-                    return $category->getName();
-                },
-            ])
-            ->add('total_sum', NumberType::class)
-            ->add('start_date', DateType::class, ['widget' => 'single_text'])
-            ->getForm();
+    #[Route('/profile/limit', name: 'create_limit', methods: 'POST')]
+    public function createLimit() {
+        $category = $this->categoryService->findById((int)$_POST['category']);
+        $date = DateTime::createFromFormat("Y-m-d", $_POST['start_date']);
+        $sum = $this->moneyOperationService->findSumByCategoryAndStartDate($this->userId, $category, $date);
+        $limit = new Limit();
+        $limit->setOwner($this->security->getUser());
+        $limit->setCategory($category);
+        $limit->setCurrentSum($_POST['total_sum'] - $sum);
+        $limit->setTotalSum($_POST['total_sum']);
+        $limit->setStartDate($date);
+        $id = $this->limitService->add($limit);
+        return new JsonResponse([
+            'id' => $id,
+            'category' => $limit->getCategory()->getName(),
+            'currentSum' => $limit->getCurrentSum(),
+            'totalSum' => $limit->getTotalSum(),
 
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            if ($this->limitService->findByCategoryAndOwner($form->getData()['category'], $this->security->getUser()) != null) {
-                $form->addError(new FormError('You already have a limit with this category'));
-                return $this->render("operation.html.twig", ['form' => $form]);
-            }
-
-            $sum = $this->moneyOperationService->findSumByCategoryAndStartDate($this->userId,
-                $form->getData()['category'], $form->getData()['start_date']);
-
-            $limit = new Limit();
-            $limit->setCategory($form->getData()['category']);
-            $limit->setCurrentSum($form->getData()['total_sum'] - $sum);
-            $limit->setTotalSum($form->getData()['total_sum']);
-            $limit->setOwner($this->security->getUser());
-            $limit->setStartDate($form->getData()['start_date']);
-            $this->limitService->add($limit);
-            return $this->redirectToRoute('profile');
-        }
-        return $this->render("operation.html.twig", ['form' => $form]);
+        ], 200);
     }
+
+//    #[Route('/profile/limit', name: 'create_limit')]
+//    public function createLimit(Request $request) {
+//        $form = $this->createFormBuilder()
+//            ->add('category', ChoiceType::class, [
+//                'choices' => $this->categoryService->findAllByTypeAndUserId(false, $this->userId),
+//                'choice_value' => 'id',
+//                'choice_label' => function (Category $category): string {
+//                    return $category->getName();
+//                },
+//            ])
+//            ->add('total_sum', NumberType::class)
+//            ->add('start_date', DateType::class, ['widget' => 'single_text'])
+//            ->getForm();
+//
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//
+//            if ($this->limitService->findByCategoryAndOwner($form->getData()['category'], $this->security->getUser()) != null) {
+//                $form->addError(new FormError('You already have a limit with this category'));
+//                return $this->render("operation.html.twig", ['form' => $form]);
+//            }
+//
+//            $sum = $this->moneyOperationService->findSumByCategoryAndStartDate($this->userId,
+//                $form->getData()['category'], $form->getData()['start_date']);
+//
+//            $limit = new Limit();
+//            $limit->setCategory($form->getData()['category']);
+//            $limit->setCurrentSum($form->getData()['total_sum'] - $sum);
+//            $limit->setTotalSum($form->getData()['total_sum']);
+//            $limit->setOwner($this->security->getUser());
+//            $limit->setStartDate($form->getData()['start_date']);
+//            $this->limitService->add($limit);
+//            return $this->redirectToRoute('profile');
+//        }
+//        return $this->render("operation.html.twig", ['form' => $form]);
+//    }
 
     #[Route('/profile/category', name: 'create_category', methods: 'POST')]
     public function createCategory() {
