@@ -43,9 +43,6 @@ class LimitService
             }
             $limit->setCurrentSum($limit->getTotalSum() - $sum);
         }
-        if ($limit->getTotalSum() != $oldLimit->getTotalSum()) {
-            $limit->setCurrentSum($limit->getCurrentSum() + $limit->getTotalSum() - $oldLimit->getTotalSum());
-        }
         $this->limitRepository->update($limit);
     }
 
