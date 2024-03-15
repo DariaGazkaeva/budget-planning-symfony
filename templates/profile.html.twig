@@ -2,12 +2,13 @@
 {% block title %}Budget Planning{% endblock %}
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('reset.css', 'css')}}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('profile.css', 'css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('profile.css', 'css')}}" id="profileStyle">
 {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('category.js', 'js') }}"></script>
     <script src="{{ asset('limit.js', 'js') }}"></script>
     <script src="{{ asset('balance.js', 'js') }}"></script>
+    <script src="{{ asset('style.js', 'js') }}"></script>
 {% endblock %}
 {% block body %}
     <div class="main-wrapper">

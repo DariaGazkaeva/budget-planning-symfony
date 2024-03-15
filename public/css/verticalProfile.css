@@ -25,10 +25,6 @@
     transition: 0.5s;
 }
 
-.operations-info:hover {
-    transform: scale(1.05);
-}
-
 .operations-info td {
     font-weight: bold;
     text-align: center;
@@ -65,8 +61,21 @@
     width: 80%;
 }
 
-.operation-forms:hover, .category-forms:hover {
-    transform: scale(1.02);
+.left-block {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.right-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.left-block, .right-block {
+    margin: 2vh;
 }
 
 .operation-forms div {
@@ -84,18 +93,8 @@
     flex-wrap: wrap;
 }
 
-.left-block {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-}
-
-.right-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    height: 55vh;
+form input, form select, form div {
+    width: 100%;
 }
 
 .right-block button {
@@ -111,10 +110,6 @@
     margin: 1vh;
     text-align: center;
     min-width: 15vw;
-}
-
-.right-block button:hover {
-    transform: scale(1.1);
 }
 
 .all-categories {
@@ -147,11 +142,6 @@
     transition: 2s;
 }
 
-.two-blocks-in-row {
-    display: grid;
-    grid-template-columns:  50% 50%;
-}
-
 .limits {
     height: 27vh;
     text-align: center;
@@ -176,10 +166,6 @@
     max-width: 90vw;
 }
 
-.limit:hover {
-    transform: scale(1.1);
-}
-
 .limit span {
     font-weight: bold;
     word-break: break-all;
@@ -199,14 +185,6 @@
 
 li {
     cursor: pointer;
-}
-
-.right-block p {
-    margin: 0;
-}
-
-.create-limit-btn:hover {
-    transform: scale(1.1);
 }
 
 .div-categories {
@@ -242,10 +220,6 @@ li {
     transition: 0.5s;
 }
 
-.create-category-form:hover, .create-limit-form:hover {
-    transform: scale(1.05);
-}
-
 .close-create-category, .close-create-limit {
     float: right;
     cursor: pointer;
@@ -261,13 +235,4 @@ li {
     display: flex;
     flex-direction: row;
     align-items: center;
-}
-
-.create-block div {
-    margin: 0.5vh;
-    padding-left: 1vh;
-}
-
-form input, form select, form div {
-    width: 100%;
 }
