@@ -12,22 +12,37 @@ div.list, div.form {
     justify-content: center;
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
 .user {
     background-color: #e0eae3;
     border: none;
     box-shadow: 5px 4px 4px #afafaf;
     cursor: pointer;
-    max-width: 30%;
-    height: 40px;
     text-align: center;
-    min-width: 20%;
-    margin: 10px;
+    margin: 1vh;
+    padding: 1vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: 0.5s;
+    min-width: 20vw;
 }
 
 .user a {
     text-decoration: none;
     color: black;
+}
+
+.user:hover {
+    transform: scale(1.1);
 }
